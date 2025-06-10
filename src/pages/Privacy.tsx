@@ -124,7 +124,7 @@ const Privacy = () => {
               <p className="text-muted-foreground leading-relaxed">
                 If you have questions about this privacy policy, please contact us at privacy@ergocharge.com or through our contact page.
               </p>
-            </div>
+            </section>
           </div>
         </div>
       </div>
