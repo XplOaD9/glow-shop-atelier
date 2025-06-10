@@ -11,6 +11,7 @@ import { useWishlist } from '@/contexts/WishlistContext';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   const { itemCount } = useCart();
   const { items: wishlistItems } = useWishlist();
@@ -26,6 +27,14 @@ const Header = () => {
 
   const isActiveRoute = (href: string) => {
     return location.pathname === href;
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Navigate to shop with search query
+      window.location.href = `/shop?search=${encodeURIComponent(searchQuery.trim())}`;
+    }
   };
 
   return (
@@ -62,21 +71,35 @@ const Header = () => {
             isSearchOpen ? 'w-64' : 'w-10'
           }`}>
             {isSearchOpen ? (
-              <div className="flex w-full">
+              <form onSubmit={handleSearch} className="flex w-full">
                 <Input
                   placeholder="Search products..."
                   className="rounded-r-none border-r-0"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
                 />
                 <Button
+                  type="submit"
+                  variant="outline"
+                  size="icon"
+                  className="rounded-l-none rounded-r-none border-r-0"
+                >
+                  <Search className="h-4 w-4" />
+                </Button>
+                <Button
+                  type="button"
                   variant="outline"
                   size="icon"
                   className="rounded-l-none"
-                  onClick={() => setIsSearchOpen(false)}
+                  onClick={() => {
+                    setIsSearchOpen(false);
+                    setSearchQuery('');
+                  }}
                 >
                   <X className="h-4 w-4" />
                 </Button>
-              </div>
+              </form>
             ) : (
               <Button
                 variant="ghost"
@@ -91,17 +114,19 @@ const Header = () => {
           {/* Actions */}
           <div className="flex items-center space-x-4">
             {/* Wishlist */}
-            <Button variant="ghost" size="icon" className="relative">
-              <Heart className="h-5 w-5" />
-              {wishlistItems.length > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
-                >
-                  {wishlistItems.length}
-                </Badge>
-              )}
-            </Button>
+            <Link to="/wishlist">
+              <Button variant="ghost" size="icon" className="relative">
+                <Heart className="h-5 w-5" />
+                {wishlistItems.length > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                  >
+                    {wishlistItems.length}
+                  </Badge>
+                )}
+              </Button>
+            </Link>
 
             {/* Cart */}
             <Link to="/cart">
@@ -149,7 +174,17 @@ const Header = () => {
                 </Link>
               ))}
               <div className="pt-4 border-t">
-                <Input placeholder="Search products..." className="w-full" />
+                <form onSubmit={handleSearch} className="flex w-full">
+                  <Input 
+                    placeholder="Search products..." 
+                    className="rounded-r-none"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Button type="submit" variant="outline" size="icon" className="rounded-l-none">
+                    <Search className="h-4 w-4" />
+                  </Button>
+                </form>
               </div>
             </nav>
           </div>

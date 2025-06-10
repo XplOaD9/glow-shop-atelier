@@ -52,12 +52,12 @@ const Footer = () => {
               <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Privacy Policy
               </Link>
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/shipping" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Shipping Info
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Returns
-              </a>
+              </Link>
+              <Link to="/returns" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Returns & Exchanges
+              </Link>
             </nav>
           </div>
 
