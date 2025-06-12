@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import NewsletterSection from '@/components/NewsletterSection';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -68,10 +69,13 @@ const Contact = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-primary/10 via-background to-secondary/30">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl lg:text-6xl font-bold mb-6">Get in Touch</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+      <section className="py-24 bg-slate-800 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900"></div>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl transform -translate-x-32 -translate-y-32"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl transform translate-x-32 translate-y-32"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-white">Get in Touch</h1>
+          <p className="text-xl text-gray-200 max-w-2xl mx-auto">
             Have a question about our products or need support? We're here to help!
           </p>
         </div>
@@ -229,6 +233,8 @@ const Contact = () => {
           </div>
         </div>
       </section>
+
+      <NewsletterSection />
 
       <Footer />
     </div>

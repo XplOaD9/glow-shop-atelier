@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import NewsletterSection from '@/components/NewsletterSection';
 
 const Blog = () => {
   const blogPosts = [
@@ -82,17 +83,21 @@ const Blog = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-primary/10 via-background to-secondary/30">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl lg:text-6xl font-bold mb-6">ErgoCharge Blog</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+      <section className="py-24 bg-slate-800 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl transform translate-x-32 -translate-y-32"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl transform -translate-x-32 translate-y-32"></div>
+        <div className="absolute top-1/2 left-1/3 w-56 h-56 bg-rose-500/5 rounded-full blur-2xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-white">ErgoCharge Blog</h1>
+          <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-8">
             Stay updated with the latest in charging technology, sustainability, and design insights.
           </p>
           <div className="max-w-md mx-auto">
             <Input
               type="text"
               placeholder="Search articles..."
-              className="w-full"
+              className="w-full bg-white/90 backdrop-blur-sm"
             />
           </div>
         </div>
@@ -221,6 +226,8 @@ const Blog = () => {
           </div>
         </section>
       </div>
+
+      <NewsletterSection />
 
       <Footer />
     </div>

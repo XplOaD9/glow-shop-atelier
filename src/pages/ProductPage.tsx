@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Heart, Star, ShoppingCart, Minus, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Heart, Star, ShoppingCart, Minus, Plus, ChevronLeft, ChevronRight, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +10,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
+import { useReviews } from '@/contexts/ReviewContext';
+import { getProductById } from '@/data/products';
+import ReviewForm from '@/components/ReviewForm';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -19,20 +22,24 @@ const ProductPage = () => {
   const [selectedMaterial, setSelectedMaterial] = useState('aluminum');
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 5;
   
   const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { getAverageRating, getTotalReviews, getReviewsByProduct } = useReviews();
 
-  // Mock product data - in a real app, this would be fetched based on the id
+  // Get product from centralized data
+  const productData = getProductById(id || "1");
+  
+  if (!productData) {
+    return <div>Product not found</div>;
+  }
+
+  // Extended product data with additional properties for this page
   const product = {
-    id: id || "1",
-    name: "ErgoCharge Pro",
-    price: 149,
-    originalPrice: 199,
-    rating: 4.9,
-    reviews: 234,
-    badge: "Best Seller",
-    description: "The ErgoCharge Pro represents the pinnacle of wireless charging technology. With its sleek aluminum design and fast-charging capabilities, it's the perfect addition to any modern workspace.",
+    ...productData,
+    description: productData.description || "The ErgoCharge Pro represents the pinnacle of wireless charging technology. With its sleek aluminum design and fast-charging capabilities, it's the perfect addition to any modern workspace.",
     features: [
       "15W Fast Wireless Charging",
       "Qi-Compatible with all devices",
@@ -59,10 +66,10 @@ const ProductPage = () => {
       { id: 'titanium', name: 'Titanium', price: 50 }
     ],
     images: [
-      "/placeholder.svg",
-      "/placeholder.svg", 
-      "/placeholder.svg",
-      "/placeholder.svg"
+      productData.image,
+      productData.image, 
+      productData.image,
+      productData.image
     ],
     inStock: true,
     stockCount: 24
@@ -103,29 +110,7 @@ const ProductPage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
   };
 
-  const reviews = [
-    {
-      id: 1,
-      author: "Sarah Johnson",
-      rating: 5,
-      date: "2024-01-15",
-      content: "Absolutely love this charger! Fast, reliable, and looks amazing on my desk."
-    },
-    {
-      id: 2,
-      author: "Mike Chen",
-      rating: 5,
-      date: "2024-01-10",
-      content: "Best wireless charger I've ever owned. The build quality is exceptional."
-    },
-    {
-      id: 3,
-      author: "Emily Davis",
-      rating: 4,
-      date: "2024-01-08",
-      content: "Great product, charges my phone quickly. Only wish it was a bit more affordable."
-    }
-  ];
+  const reviews = getReviewsByProduct(product.id);
 
   return (
     <div className="min-h-screen bg-background">
@@ -196,11 +181,11 @@ const ProductPage = () => {
                   {[...Array(5)].map((_, i) => (
                     <Star 
                       key={i} 
-                      className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
+                      className={`w-4 h-4 ${i < Math.round(getAverageRating(product.id)) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
                     />
                   ))}
                   <span className="text-sm text-muted-foreground ml-2">
-                    {product.rating} ({product.reviews} reviews)
+                    {getAverageRating(product.id)} ({getTotalReviews(product.id)} reviews)
                   </span>
                 </div>
               </div>
@@ -372,30 +357,107 @@ const ProductPage = () => {
           </TabsContent>
           
           <TabsContent value="reviews" className="mt-8">
-            <div className="space-y-6">
-              {reviews.map((review) => (
-                <Card key={review.id}>
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h4 className="font-semibold">{review.author}</h4>
-                        <div className="flex items-center space-x-2 mt-1">
-                          <div className="flex">
-                            {[...Array(5)].map((_, i) => (
-                              <Star 
-                                key={i} 
-                                className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
-                              />
+            <div className="space-y-8">
+              {/* Review Form */}
+              <ReviewForm productId={product.id} productName={product.name} />
+              
+              {/* Existing Reviews */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">
+                  Reviews pentru {product.name} ({getTotalReviews(product.id)})
+                </h3>
+                
+                {/* Paginated Reviews */}
+                <div className="space-y-6">
+                  {reviews.length > 0 ? (
+                    <>
+                      {/* Reviews for current page */}
+                      {reviews
+                        .slice((currentPage - 1) * reviewsPerPage, currentPage * reviewsPerPage)
+                        .map((review) => (
+                          <Card key={review.id}>
+                            <CardContent className="p-6">
+                              <div className="flex items-start justify-between mb-4">
+                                <div>
+                                  <h4 className="font-semibold">{review.userName}</h4>
+                                  <div className="flex items-center space-x-2 mt-1">
+                                    <div className="flex">
+                                      {[...Array(5)].map((_, i) => (
+                                        <Star 
+                                          key={i} 
+                                          className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
+                                        />
+                                      ))}
+                                    </div>
+                                    <span className="text-sm text-muted-foreground">{review.date}</span>
+                                    {review.verified && (
+                                      <span className="text-xs text-green-600 bg-green-100 px-2 py-1 rounded">
+                                        Verificat
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                              <p className="text-muted-foreground">{review.comment}</p>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      
+                      {/* Pagination Controls */}
+                      {reviews.length > reviewsPerPage && (
+                        <div className="flex items-center justify-center space-x-4 mt-8">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                            disabled={currentPage === 1}
+                          >
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Anterior
+                          </Button>
+                          
+                          <div className="flex items-center space-x-2">
+                            {[...Array(Math.ceil(reviews.length / reviewsPerPage))].map((_, index) => (
+                              <Button
+                                key={index}
+                                variant={currentPage === index + 1 ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => setCurrentPage(index + 1)}
+                                className="w-8 h-8"
+                              >
+                                {index + 1}
+                              </Button>
                             ))}
                           </div>
-                          <span className="text-sm text-muted-foreground">{review.date}</span>
+                          
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage(prev => Math.min(Math.ceil(reviews.length / reviewsPerPage), prev + 1))}
+                            disabled={currentPage === Math.ceil(reviews.length / reviewsPerPage)}
+                          >
+                            Următor
+                            <ArrowRight className="w-4 h-4 ml-2" />
+                          </Button>
                         </div>
+                      )}
+                      
+                      {/* Reviews Summary */}
+                      <div className="text-center text-sm text-muted-foreground mt-4">
+                        Afișare {Math.min((currentPage - 1) * reviewsPerPage + 1, reviews.length)} - {Math.min(currentPage * reviewsPerPage, reviews.length)} din {reviews.length} reviews
                       </div>
-                    </div>
-                    <p className="text-muted-foreground">{review.content}</p>
-                  </CardContent>
-                </Card>
-              ))}
+                    </>
+                  ) : (
+                    <Card>
+                      <CardContent className="p-8 text-center">
+                        <p className="text-muted-foreground">
+                          Nu există încă reviews pentru acest produs. Fii primul care scrie un review!
+                        </p>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
+              </div>
             </div>
           </TabsContent>
         </Tabs>

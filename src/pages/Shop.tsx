@@ -10,8 +10,11 @@ import { Slider } from '@/components/ui/slider';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
+import { useReviews } from '@/contexts/ReviewContext';
+import { products, categories, materials } from '@/data/products';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import NewsletterSection from '@/components/NewsletterSection';
 import { Link } from 'react-router-dom';
 
 const Shop = () => {
@@ -22,93 +25,7 @@ const Shop = () => {
   
   const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-
-  const products = [
-    {
-      id: "1",
-      name: "ErgoCharge Pro",
-      price: 149,
-      originalPrice: 199,
-      image: "/placeholder.svg",
-      rating: 4.9,
-      reviews: 234,
-      category: "wireless",
-      material: "aluminum",
-      badge: "Best Seller",
-      colors: ["black", "white", "gray"]
-    },
-    {
-      id: "2",
-      name: "ErgoCharge Compact",
-      price: 79,
-      image: "/placeholder.svg",
-      rating: 4.8,
-      reviews: 156,
-      category: "portable",
-      material: "plastic",
-      colors: ["black", "blue", "red"]
-    },
-    {
-      id: "3",
-      name: "ErgoCharge Wireless",
-      price: 199,
-      image: "/placeholder.svg",
-      rating: 4.9,
-      reviews: 89,
-      category: "wireless",
-      material: "glass",
-      badge: "New",
-      colors: ["white", "black"]
-    },
-    {
-      id: "4",
-      name: "ErgoCharge Car Mount",
-      price: 59,
-      image: "/placeholder.svg",
-      rating: 4.7,
-      reviews: 67,
-      category: "car",
-      material: "aluminum",
-      colors: ["black"]
-    },
-    {
-      id: "5",
-      name: "ErgoCharge Station",
-      price: 299,
-      image: "/placeholder.svg",
-      rating: 4.9,
-      reviews: 145,
-      category: "desktop",
-      material: "aluminum",
-      badge: "Premium",
-      colors: ["silver", "black"]
-    },
-    {
-      id: "6",
-      name: "ErgoCharge Travel Kit",
-      price: 129,
-      image: "/placeholder.svg",
-      rating: 4.6,
-      reviews: 98,
-      category: "portable",
-      material: "fabric",
-      colors: ["black", "navy", "gray"]
-    }
-  ];
-
-  const categories = [
-    { id: "wireless", label: "Wireless Chargers" },
-    { id: "portable", label: "Portable Chargers" },
-    { id: "car", label: "Car Chargers" },
-    { id: "desktop", label: "Desktop Stations" }
-  ];
-
-  const materials = [
-    { id: "aluminum", label: "Aluminum" },
-    { id: "plastic", label: "Plastic" },
-    { id: "glass", label: "Glass" },
-    { id: "fabric", label: "Fabric" }
-  ];
+  const { getAverageRating, getTotalReviews } = useReviews();
 
   const handleCategoryChange = (categoryId: string, checked: boolean) => {
     setSelectedCategories(prev => 
@@ -160,9 +77,17 @@ const Shop = () => {
       <Header />
       
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Shop ErgoCharge</h1>
-          <p className="text-muted-foreground">Discover our complete range of premium charging solutions</p>
+        <div className="mb-8 bg-slate-800 p-8 rounded-lg relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl transform translate-x-16 -translate-y-16"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/10 rounded-full blur-2xl transform -translate-x-16 translate-y-16"></div>
+          <div className="relative z-10 text-center">
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4 text-white">Shop ErgoCharge</h1>
+            <h2 className="text-xl lg:text-2xl font-semibold mb-4 text-blue-400">Redefine your workspace.</h2>
+            <p className="text-gray-200 max-w-3xl mx-auto leading-relaxed">
+              Explore our curated collection of elegant, multi-device charging docks and smart desk accessories — built for professionals, creators, and minimalist workspaces.
+            </p>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-4 gap-8">
@@ -305,12 +230,12 @@ const Shop = () => {
                         {[...Array(5)].map((_, i) => (
                           <Star 
                             key={i} 
-                            className={`w-3 h-3 ${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
+                            className={`w-3 h-3 ${i < Math.round(getAverageRating(product.id)) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
                           />
                         ))}
                       </div>
                       <span className="text-xs text-muted-foreground">
-                        ({product.reviews})
+                        ({getTotalReviews(product.id)})
                       </span>
                     </div>
                     <Link to={`/product/${product.id}`}>
@@ -340,6 +265,8 @@ const Shop = () => {
           </div>
         </div>
       </div>
+
+      <NewsletterSection />
 
       <Footer />
     </div>
