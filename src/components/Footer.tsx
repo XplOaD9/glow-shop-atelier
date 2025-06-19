@@ -1,10 +1,20 @@
-
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useCallback } from 'react';
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleQuickLink = useCallback((path: string) => {
+    navigate(path);
+    setTimeout(() => {
+      const hero = document.getElementById('hero-section');
+      if (hero) hero.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  }, [navigate]);
+
   return (
     <footer className="bg-secondary/50 border-t">
       <div className="container mx-auto px-4 py-12">
@@ -27,18 +37,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-semibold">Quick Links</h3>
             <nav className="flex flex-col space-y-2">
-              <Link to="/shop" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Shop
-              </Link>
-              <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                About
-              </Link>
-              <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Contact
-              </Link>
-              <Link to="/faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                FAQ
-              </Link>
+              <button onClick={() => handleQuickLink('/shop')} className="text-left text-sm text-muted-foreground hover:text-primary transition-colors bg-transparent border-0 p-0 cursor-pointer">Shop</button>
+              <button onClick={() => handleQuickLink('/about')} className="text-left text-sm text-muted-foreground hover:text-primary transition-colors bg-transparent border-0 p-0 cursor-pointer">About</button>
+              <button onClick={() => handleQuickLink('/contact')} className="text-left text-sm text-muted-foreground hover:text-primary transition-colors bg-transparent border-0 p-0 cursor-pointer">Contact</button>
+              <button onClick={() => handleQuickLink('/faq')} className="text-left text-sm text-muted-foreground hover:text-primary transition-colors bg-transparent border-0 p-0 cursor-pointer">FAQ</button>
             </nav>
           </div>
 

@@ -1,5 +1,4 @@
-
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { toast } from "@/hooks/use-toast";
 
 interface CartItem {
@@ -24,6 +23,29 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+// Helper functions for localStorage
+const CART_STORAGE_KEY = 'ergocharge_cart';
+
+const loadCartFromStorage = (): CartItem[] => {
+  try {
+    if (typeof window === 'undefined') return [];
+    const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+    return savedCart ? JSON.parse(savedCart) : [];
+  } catch (error) {
+    console.warn('Error loading cart from localStorage:', error);
+    return [];
+  }
+};
+
+const saveCartToStorage = (items: CartItem[]) => {
+  try {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  } catch (error) {
+    console.warn('Error saving cart to localStorage:', error);
+  }
+};
+
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
@@ -34,6 +56,21 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load data from localStorage on component mount
+  useEffect(() => {
+    const savedItems = loadCartFromStorage();
+    setItems(savedItems);
+    setIsLoaded(true);
+  }, []);
+
+  // Save to localStorage whenever items change
+  useEffect(() => {
+    if (isLoaded) {
+      saveCartToStorage(items);
+    }
+  }, [items, isLoaded]);
 
   const addToCart = (newItem: Omit<CartItem, 'quantity'>) => {
     setItems(currentItems => {
@@ -49,7 +86,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           description: `Increased quantity of ${newItem.name}`,
         });
         return currentItems.map(item =>
-          item.id === existingItem.id ? 
+          item.id === existingItem.id && 
+          item.color === existingItem.color && 
+          item.material === existingItem.material ? 
           { ...item, quantity: item.quantity + 1 } : item
         );
       } else {
@@ -63,10 +102,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const removeFromCart = (id: string) => {
-    setItems(currentItems => currentItems.filter(item => item.id !== id));
-    toast({
-      title: "Removed from Cart",
-      description: "Item has been removed from your cart",
+    setItems(currentItems => {
+      const itemToRemove = currentItems.find(item => item.id === id);
+      if (itemToRemove) {
+        toast({
+          title: "Removed from Cart",
+          description: `${itemToRemove.name} has been removed from your cart`,
+        });
+      }
+      return currentItems.filter(item => item.id !== id);
     });
   };
 
@@ -84,6 +128,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const clearCart = () => {
     setItems([]);
+    toast({
+      title: "Cart Cleared",
+      description: "All items have been removed from your cart",
+    });
   };
 
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);

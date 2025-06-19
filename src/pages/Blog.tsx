@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,75 +7,12 @@ import { Input } from '@/components/ui/input';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import NewsletterSection from '@/components/NewsletterSection';
+import { blogPosts, getFeaturedPost, getRegularPosts } from '@/data/blogPosts';
 
 const Blog = () => {
-  const blogPosts = [
-    {
-      id: 1,
-      title: "The Future of Wireless Charging: What to Expect in 2024",
-      excerpt: "Explore the latest innovations in wireless charging technology and how they'll change the way we power our devices.",
-      image: "/placeholder.svg",
-      category: "Technology",
-      author: "Sarah Johnson",
-      date: "2024-01-15",
-      readTime: "5 min read",
-      featured: true
-    },
-    {
-      id: 2,
-      title: "Sustainable Tech: How ErgoCharge is Leading the Green Revolution",
-      excerpt: "Discover our commitment to sustainability and how we're making a positive impact on the environment.",
-      image: "/placeholder.svg",
-      category: "Sustainability",
-      author: "Mike Chen",
-      date: "2024-01-10",
-      readTime: "7 min read"
-    },
-    {
-      id: 3,
-      title: "Maximizing Battery Life: Expert Tips for Your Devices",
-      excerpt: "Learn the best practices for maintaining your device's battery health and extending its lifespan.",
-      image: "/placeholder.svg",
-      category: "Tips",
-      author: "Emily Davis",
-      date: "2024-01-08",
-      readTime: "4 min read"
-    },
-    {
-      id: 4,
-      title: "Behind the Design: Creating the ErgoCharge Pro",
-      excerpt: "Go behind the scenes and learn about the design process that brought our flagship product to life.",
-      image: "/placeholder.svg",
-      category: "Design",
-      author: "Sarah Johnson",
-      date: "2024-01-05",
-      readTime: "6 min read"
-    },
-    {
-      id: 5,
-      title: "The Science of Fast Charging: How It Works",
-      excerpt: "Understand the technology behind fast charging and why it's revolutionizing how we use our devices.",
-      image: "/placeholder.svg",
-      category: "Technology",
-      author: "Mike Chen",
-      date: "2024-01-03",
-      readTime: "8 min read"
-    },
-    {
-      id: 6,
-      title: "Work From Home: Setting Up the Perfect Charging Station",
-      excerpt: "Create an efficient and organized workspace with the ideal charging setup for all your devices.",
-      image: "/placeholder.svg",
-      category: "Lifestyle",
-      author: "Emily Davis",
-      date: "2024-01-01",
-      readTime: "5 min read"
-    }
-  ];
-
-  const categories = ["All", "Technology", "Sustainability", "Tips", "Design", "Lifestyle"];
-  const featuredPost = blogPosts.find(post => post.featured);
-  const regularPosts = blogPosts.filter(post => !post.featured);
+  const categories = ["All", "Tehnologie", "Sustenabilitate", "Sfaturi", "Design", "Lifestyle"];
+  const featuredPost = getFeaturedPost();
+  const regularPosts = getRegularPosts();
 
   return (
     <div className="min-h-screen bg-background">
@@ -107,7 +43,8 @@ const Blog = () => {
         {/* Featured Post */}
         {featuredPost && (
           <section className="mb-16">
-            <h2 className="text-2xl font-bold mb-8">Featured Article</h2>
+            <h2 className="text-2xl font-bold mb-8">Articol Recomandat</h2>
+            <Link to={`/blog/${featuredPost.id}`}>
             <Card className="overflow-hidden hover:shadow-lg transition-shadow">
               <div className="grid md:grid-cols-2 gap-0">
                 <div className="aspect-video md:aspect-square bg-secondary/30">
@@ -141,12 +78,13 @@ const Blog = () => {
                     </div>
                   </div>
                   <Button className="w-fit mt-6 group">
-                    Read Article
+                      Citește articolul
                     <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </CardContent>
               </div>
             </Card>
+            </Link>
           </section>
         )}
 
@@ -167,10 +105,11 @@ const Blog = () => {
         </section>
 
         {/* Blog Posts Grid */}
-        <section>
+        <section className="mb-16">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {regularPosts.map((post) => (
-              <Card key={post.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+              <Link key={post.id} to={`/blog/${post.id}`}>
+                <Card className="group hover:shadow-lg transition-all duration-300 overflow-hidden h-full">
                 <div className="aspect-video bg-secondary/30 overflow-hidden">
                   <img 
                     src={post.image} 
@@ -178,12 +117,12 @@ const Blog = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <CardContent className="p-6 space-y-4">
-                  <Badge variant="secondary">{post.category}</Badge>
+                  <CardContent className="p-6 space-y-4 flex flex-col h-full">
+                    <Badge variant="secondary" className="w-fit">{post.category}</Badge>
                   <h3 className="text-xl font-semibold leading-tight group-hover:text-primary transition-colors">
                     {post.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm">
+                    <p className="text-muted-foreground text-sm flex-1">
                     {post.excerpt}
                   </p>
                   <div className="flex items-center justify-between">
@@ -198,12 +137,13 @@ const Blog = () => {
                       </div>
                     </div>
                     <Button variant="ghost" size="sm" className="group">
-                      Read More
+                        Citește mai mult
                       <ArrowRight className="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" />
                     </Button>
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             ))}
           </div>
         </section>
@@ -211,24 +151,23 @@ const Blog = () => {
         {/* Newsletter CTA */}
         <section className="mt-24 py-16 bg-primary text-primary-foreground rounded-3xl text-center">
           <div className="max-w-2xl mx-auto space-y-6">
-            <h2 className="text-3xl font-bold">Stay in the Loop</h2>
+            <h2 className="text-3xl font-bold">Rămâi la curent</h2>
             <p className="text-primary-foreground/90">
-              Subscribe to our newsletter and never miss the latest articles, product updates, and exclusive offers.
+              Abonează-te la newsletter și nu rata cele mai noi articole, actualizări de produse și oferte exclusive.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <Input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Introdu adresa de email"
                 className="bg-primary-foreground text-foreground"
               />
-              <Button variant="secondary">Subscribe</Button>
+              <Button variant="secondary">Abonează-te</Button>
             </div>
           </div>
         </section>
       </div>
 
       <NewsletterSection />
-
       <Footer />
     </div>
   );

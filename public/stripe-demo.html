@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Checkout Demo - Payment Processing</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stripe-container {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .stripe-logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #635bff;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+        
+        .amount {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+        
+        .merchant-name {
+            color: #6b7280;
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+        
+        .payment-form {
+            text-align: left;
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+            font-size: 14px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #635bff;
+            box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
+        }
+        
+        .card-icons {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .card-icon {
+            width: 32px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .visa { background: #1434cb; }
+        .mastercard { background: #eb001b; }
+        .amex { background: #006fcf; }
+        
+        .pay-button {
+            width: 100%;
+            background: #635bff;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 16px;
+        }
+        
+        .pay-button:hover {
+            background: #5a52ff;
+        }
+        
+        .pay-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .security-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .lock-icon {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .demo-notice {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 24px;
+            color: #92400e;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .cancel-link {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .cancel-link:hover {
+            color: #374151;
+            text-decoration: underline;
+        }
+        
+        .processing {
+            display: none;
+        }
+        
+        .processing.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #635bff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success {
+            display: none;
+            color: #065f46;
+        }
+        
+        .success.show {
+            display: block;
+        }
+        
+        .checkmark {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #10b981;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="stripe-container">
+        <div class="stripe-logo">stripe</div>
+        
+        <div class="demo-notice">
+            🧪 <strong>Demo Mode:</strong> This is a simulation - no real payment will be processed
+        </div>
+        
+        <div id="payment-form">
+            <div class="amount" id="amount">$0.00</div>
+            <div class="merchant-name">Glow Shop Atelier</div>
+            
+            <div class="payment-form">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="email" placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Card Information</label>
+                    <input type="text" class="form-input" placeholder="1234 1234 1234 1234" maxlength="19">
+                    <div class="card-icons">
+                        <div class="card-icon visa">VISA</div>
+                        <div class="card-icon mastercard">MC</div>
+                        <div class="card-icon amex">AMEX</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 12px;">
+                    <div class="form-group" style="flex: 1;">
+                        <input type="text" class="form-input" placeholder="MM / YY" maxlength="7">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <input type="text" class="form-input" placeholder="CVC" maxlength="4">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Cardholder Name</label>
+                    <input type="text" class="form-input" id="cardholder" placeholder="Full name on card">
+                </div>
+            </div>
+            
+            <button class="pay-button" onclick="processPayment()">
+                Pay <span id="pay-amount">$0.00</span>
+            </button>
+            
+            <div class="security-info">
+                <svg class="lock-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                </svg>
+                Secured by Stripe SSL encryption
+            </div>
+            
+            <a href="#" class="cancel-link" onclick="cancelPayment()">← Return to Glow Shop Atelier</a>
+        </div>
+        
+        <div id="processing" class="processing">
+            <div class="spinner"></div>
+            <div style="color: #374151; font-weight: 500; margin-bottom: 8px;">Processing Payment...</div>
+            <div style="color: #6b7280; font-size: 14px;">Please wait while we securely process your payment</div>
+        </div>
+        
+        <div id="success" class="success">
+            <div class="checkmark">✓</div>
+            <div style="font-weight: 600; font-size: 18px; margin-bottom: 8px;">Payment Successful!</div>
+            <div style="color: #6b7280; font-size: 14px; margin-bottom: 16px;">Thank you for your purchase</div>
+            <div style="color: #6b7280; font-size: 12px; margin-bottom: 16px;">This window will close automatically in a few seconds...</div>
+            <button 
+                id="manual-redirect" 
+                style="display: none; background: #635bff; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px;"
+                onclick="manualRedirect()"
+            >
+                Close Window
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const amount = urlParams.get('amount');
+        const customerEmail = urlParams.get('customer_email');
+        const customerName = urlParams.get('customer_name');
+        const successUrl = urlParams.get('success_url');
+        const cancelUrl = urlParams.get('cancel_url');
+        
+        // Debug logging
+        console.log('Stripe Demo Page Loaded:', {
+            amount,
+            customerEmail,
+            customerName,
+            successUrl,
+            cancelUrl,
+            isPopup: !!window.opener
+        });
+        
+        // Update page content
+        if (amount) {
+            const formattedAmount = '$' + (parseInt(amount) / 100).toFixed(2);
+            document.getElementById('amount').textContent = formattedAmount;
+            document.getElementById('pay-amount').textContent = formattedAmount;
+        }
+        
+        if (customerEmail) {
+            document.getElementById('email').value = customerEmail;
+        }
+        
+        if (customerName) {
+            document.getElementById('cardholder').value = customerName;
+        }
+        
+        function processPayment() {
+            // Hide form and show processing
+            document.getElementById('payment-form').style.display = 'none';
+            document.getElementById('processing').classList.add('show');
+            
+            // Simulate payment processing (2-3 seconds)
+            setTimeout(() => {
+                document.getElementById('processing').classList.remove('show');
+                document.getElementById('success').classList.add('show');
+                
+                // Close popup after success - let parent handle the confirmation
+                setTimeout(() => {
+                    try {
+                        // Just close the popup - the parent window will handle the success popup
+                        window.close();
+                    } catch (error) {
+                        console.error('Close failed:', error);
+                        // Show manual redirect button if automatic close fails
+                        document.getElementById('manual-redirect').style.display = 'inline-block';
+                    }
+                }, 3000);
+                
+                // Show manual redirect button after 5 seconds as backup
+                setTimeout(() => {
+                    document.getElementById('manual-redirect').style.display = 'inline-block';
+                }, 5000);
+            }, 2500);
+        }
+        
+        function cancelPayment() {
+            if (cancelUrl) {
+                // Try to redirect the parent window if this is a popup
+                if (window.opener && !window.opener.closed) {
+                    window.opener.location.href = cancelUrl;
+                    window.close();
+                } else {
+                    // If not a popup or parent is closed, redirect this window
+                    window.location.href = cancelUrl;
+                }
+            } else {
+                window.close();
+            }
+        }
+        
+        function manualRedirect() {
+            // Just close the popup - parent will handle confirmation
+            window.close();
+        }
+        
+        // Auto-format card number
+        document.querySelector('input[placeholder="1234 1234 1234 1234"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+        
+        // Auto-format expiry date
+        document.querySelector('input[placeholder="MM / YY"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + ' / ' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html> 

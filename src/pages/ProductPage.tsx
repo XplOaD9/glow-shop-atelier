@@ -1,6 +1,5 @@
-
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Heart, Star, ShoppingCart, Minus, Plus, ChevronLeft, ChevronRight, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,12 +11,14 @@ import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useReviews } from '@/contexts/ReviewContext';
 import { getProductById } from '@/data/products';
+import { toast } from '@/hooks/use-toast';
 import ReviewForm from '@/components/ReviewForm';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 const ProductPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [selectedColor, setSelectedColor] = useState('black');
   const [selectedMaterial, setSelectedMaterial] = useState('aluminum');
   const [quantity, setQuantity] = useState(1);
@@ -92,14 +93,40 @@ const ProductPage = () => {
   };
 
   const handleAddToCart = () => {
-    addToCart({
-      id: `${product.id}-${selectedColor}-${selectedMaterial}`,
-      name: product.name,
-      price: finalPrice,
-      image: product.images[0],
-      color: selectedColor,
-      material: selectedMaterial
+    // Add the product with the selected quantity
+    for (let i = 0; i < quantity; i++) {
+      addToCart({
+        id: `${product.id}-${selectedColor}-${selectedMaterial}`,
+        name: product.name,
+        price: finalPrice,
+        image: product.images[0],
+        color: selectedColor,
+        material: selectedMaterial
+      });
+    }
+  };
+
+  const handleBuyNow = () => {
+    // Add product to cart with selected options and quantity
+    for (let i = 0; i < quantity; i++) {
+      addToCart({
+        id: `${product.id}-${selectedColor}-${selectedMaterial}`,
+        name: product.name,
+        price: finalPrice,
+        image: product.images[0],
+        color: selectedColor,
+        material: selectedMaterial
+      });
+    }
+    
+    // Show success toast
+    toast({
+      title: "Added to Cart & Redirecting",
+      description: `${product.name} (${quantity}x) added to cart. Taking you to checkout...`,
     });
+    
+    // Redirect to checkout immediately using navigate for better UX
+    navigate('/checkout');
   };
 
   const nextImage = () => {
@@ -301,7 +328,12 @@ const ProductPage = () => {
                   />
                 </Button>
               </div>
-              <Button variant="outline" className="w-full">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={handleBuyNow}
+                disabled={!product.inStock}
+              >
                 Buy Now
               </Button>
             </div>
@@ -368,40 +400,40 @@ const ProductPage = () => {
                 </h3>
                 
                 {/* Paginated Reviews */}
-                <div className="space-y-6">
+            <div className="space-y-6">
                   {reviews.length > 0 ? (
                     <>
                       {/* Reviews for current page */}
                       {reviews
                         .slice((currentPage - 1) * reviewsPerPage, currentPage * reviewsPerPage)
                         .map((review) => (
-                          <Card key={review.id}>
-                            <CardContent className="p-6">
-                              <div className="flex items-start justify-between mb-4">
-                                <div>
+                <Card key={review.id}>
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
                                   <h4 className="font-semibold">{review.userName}</h4>
-                                  <div className="flex items-center space-x-2 mt-1">
-                                    <div className="flex">
-                                      {[...Array(5)].map((_, i) => (
-                                        <Star 
-                                          key={i} 
-                                          className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
-                                        />
-                                      ))}
-                                    </div>
-                                    <span className="text-sm text-muted-foreground">{review.date}</span>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <Star 
+                                key={i} 
+                                className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
+                              />
+                            ))}
+                          </div>
+                          <span className="text-sm text-muted-foreground">{review.date}</span>
                                     {review.verified && (
                                       <span className="text-xs text-green-600 bg-green-100 px-2 py-1 rounded">
                                         Verificat
                                       </span>
                                     )}
-                                  </div>
-                                </div>
-                              </div>
+                        </div>
+                      </div>
+                    </div>
                               <p className="text-muted-foreground">{review.comment}</p>
-                            </CardContent>
-                          </Card>
-                        ))}
+                  </CardContent>
+                </Card>
+              ))}
                       
                       {/* Pagination Controls */}
                       {reviews.length > reviewsPerPage && (

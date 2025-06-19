@@ -225,7 +225,7 @@ const Index = () => {
                   <h3 className="text-xl font-semibold">{product.name}</h3>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <span className="text-2xl font-bold">${product.price}</span>
+                    <span className="text-2xl font-bold">${product.price}</span>
                       {product.originalPrice && (
                         <span className="text-lg text-muted-foreground line-through">
                           ${product.originalPrice}

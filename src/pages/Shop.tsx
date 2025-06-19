@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Heart, Star, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';

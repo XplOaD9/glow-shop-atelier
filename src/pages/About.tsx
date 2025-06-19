@@ -1,4 +1,3 @@
-
 import { Leaf, Users, Award, Target } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import Header from '@/components/Header';
