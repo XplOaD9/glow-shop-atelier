@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/contexts/CartContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { StripeProvider } from '@/contexts/StripeContext';
 import StripePaymentForm from '@/components/StripePaymentForm';
 import { usePaymentIntent } from '@/hooks/usePaymentIntent';
@@ -16,6 +17,7 @@ import { romanianCities, romanianCounties, getCountyByCity } from '@/data/cities
 
 const Checkout = () => {
   const { items, total } = useCart();
+  const { user, isAuthenticated } = useAuth();
   const [step, setStep] = useState<'shipping' | 'payment'>('shipping');
   const [customerInfo, setCustomerInfo] = useState({
     firstName: '',
@@ -28,6 +30,20 @@ const Checkout = () => {
     zipCode: '',
     country: 'RO',
   });
+
+  // Pre-fill form data for authenticated users
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const [firstName, ...lastNameParts] = user.fullName.split(' ');
+      setCustomerInfo(prev => ({
+        ...prev,
+        firstName: firstName || '',
+        lastName: lastNameParts.join(' ') || '',
+        email: user.email,
+        phone: user.phone || '',
+      }));
+    }
+  }, [isAuthenticated, user]);
 
   const shippingCost = total > 100 ? 0 : 10;
   const tax = total * 0.08;
@@ -102,6 +118,30 @@ const Checkout = () => {
     }));
   };
 
+  // Redirect if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h1 className="text-3xl font-bold mb-4">Sign In Required</h1>
+          <p className="text-muted-foreground mb-8">
+            You need to be signed in to proceed with checkout. Create an account or sign in to continue.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Button onClick={() => window.location.href = '/'} variant="outline" size="lg">
+              Go Home
+            </Button>
+            <Button onClick={() => window.location.href = '/shop'} size="lg">
+              Continue Shopping
+            </Button>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-background">
@@ -162,9 +202,17 @@ const Checkout = () => {
               {step === 'shipping' && (
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center space-x-2">
-                      <MapPin className="w-5 h-5" />
-                      <span>Shipping Information</span>
+                    <CardTitle className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="w-5 h-5" />
+                        <span>Shipping Information</span>
+                      </div>
+                      {isAuthenticated && (
+                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                          <User className="w-4 h-4" />
+                          <span>Auto-filled from profile</span>
+                        </div>
+                      )}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>

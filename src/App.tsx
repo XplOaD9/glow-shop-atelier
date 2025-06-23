@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { ReviewProvider } from "@/contexts/ReviewContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Shop from "./pages/Shop";
 import ProductPage from "./pages/ProductPage";
@@ -23,6 +24,7 @@ import Shipping from "./pages/Shipping";
 import Returns from "./pages/Returns";
 import NotFound from "./pages/NotFound";
 import BlogPost from "./pages/BlogPost";
+import Profile from "./pages/Profile";
 import { useEffect } from 'react';
 
 const queryClient = new QueryClient();
@@ -38,12 +40,13 @@ function ScrollToTop() {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <ReviewProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
+      <AuthProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <ReviewProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
               <ScrollToTop />
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -60,6 +63,7 @@ const App = () => (
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout/success" element={<PaymentSuccess />} />
                 <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/shipping" element={<Shipping />} />
                 <Route path="/returns" element={<Returns />} />
                 <Route path="*" element={<NotFound />} />
@@ -68,6 +72,7 @@ const App = () => (
           </ReviewProvider>
         </WishlistProvider>
       </CartProvider>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

@@ -10,9 +10,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useReviews } from '@/contexts/ReviewContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { getProductById } from '@/data/products';
 import { toast } from '@/hooks/use-toast';
 import ReviewForm from '@/components/ReviewForm';
+import AuthModal from '@/components/AuthModal';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -24,11 +26,13 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const reviewsPerPage = 5;
   
   const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { getAverageRating, getTotalReviews, getReviewsByProduct } = useReviews();
+  const { isAuthenticated } = useAuth();
 
   // Get product from centralized data
   const productData = getProductById(id || "1");
@@ -107,6 +111,11 @@ const ProductPage = () => {
   };
 
   const handleBuyNow = () => {
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
+      return;
+    }
+
     // Add product to cart with selected options and quantity
     for (let i = 0; i < quantity; i++) {
       addToCart({
@@ -334,7 +343,7 @@ const ProductPage = () => {
                 onClick={handleBuyNow}
                 disabled={!product.inStock}
               >
-                Buy Now
+                {isAuthenticated ? 'Buy Now' : 'Sign In to Buy Now'}
               </Button>
             </div>
 
@@ -496,6 +505,12 @@ const ProductPage = () => {
       </div>
 
       <Footer />
+      
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      />
     </div>
   );
 };

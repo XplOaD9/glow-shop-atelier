@@ -1,19 +1,33 @@
 
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/contexts/CartContext';
+import { useAuth } from '@/contexts/AuthContext';
+import AuthModal from '@/components/AuthModal';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 const Cart = () => {
   const { items, updateQuantity, removeFromCart, total, itemCount } = useCart();
+  const { isAuthenticated } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const shippingCost = total > 100 ? 0 : 10;
   const tax = total * 0.08;
   const finalTotal = total + shippingCost + tax;
+
+  const handleCheckoutClick = () => {
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
+      return;
+    }
+    // Proceed to checkout if authenticated
+    window.location.href = '/checkout';
+  };
 
   if (items.length === 0) {
     return (
@@ -141,11 +155,9 @@ const Cart = () => {
                 )}
 
                 <div className="space-y-3">
-                  <Link to="/checkout" className="block">
-                    <Button className="w-full" size="lg">
-                      Proceed to Checkout
-                    </Button>
-                  </Link>
+                  <Button className="w-full" size="lg" onClick={handleCheckoutClick}>
+                    {isAuthenticated ? 'Proceed to Checkout' : 'Sign In to Checkout'}
+                  </Button>
                   <Link to="/shop" className="block">
                     <Button variant="outline" className="w-full">
                       Continue Shopping
@@ -159,6 +171,12 @@ const Cart = () => {
       </div>
 
       <Footer />
+      
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      />
     </div>
   );
 };

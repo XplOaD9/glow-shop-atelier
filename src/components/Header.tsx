@@ -1,20 +1,25 @@
 
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShoppingCart, Heart, Search } from 'lucide-react';
+import { Menu, X, ShoppingCart, Heart, Search, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
+import { useAuth } from '@/contexts/AuthContext';
+import AuthModal from '@/components/AuthModal';
+import UserMenu from '@/components/UserMenu';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const location = useLocation();
   const { itemCount } = useCart();
   const { items: wishlistItems } = useWishlist();
+  const { user, isAuthenticated } = useAuth();
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -143,6 +148,20 @@ const Header = () => {
               </Button>
             </Link>
 
+            {/* User Authentication */}
+            {isAuthenticated ? (
+              <UserMenu />
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => setIsAuthModalOpen(true)}
+                className="hidden sm:flex"
+              >
+                <User className="h-5 w-5" />
+              </Button>
+            )}
+
             {/* Mobile Menu Button */}
             <Button
               variant="ghost"
@@ -186,9 +205,32 @@ const Header = () => {
                   </Button>
                 </form>
               </div>
+
+              {/* Mobile Auth Button */}
+              {!isAuthenticated && (
+                <div className="pt-4 border-t">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => {
+                      setIsAuthModalOpen(true);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    Sign In / Sign Up
+                  </Button>
+                </div>
+              )}
             </nav>
           </div>
         )}
+
+        {/* Auth Modal */}
+        <AuthModal 
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+        />
       </div>
     </header>
   );

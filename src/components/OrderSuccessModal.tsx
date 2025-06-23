@@ -21,7 +21,7 @@ const OrderSuccessModal = ({ isOpen, orderId, amount, onClose }: OrderSuccessMod
 
   return (
     <div 
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[99999] p-4"
       onClick={handleBackgroundClick}
     >
       <Card className="w-full max-w-md animate-in zoom-in duration-200">
