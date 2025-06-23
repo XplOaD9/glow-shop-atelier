@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -15,6 +15,7 @@ const Cart = () => {
   const { items, updateQuantity, removeFromCart, total, itemCount } = useCart();
   const { isAuthenticated } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const navigate = useNavigate();
 
   const shippingCost = total > 100 ? 0 : 10;
   const tax = total * 0.08;
@@ -25,8 +26,8 @@ const Cart = () => {
       setShowAuthModal(true);
       return;
     }
-    // Proceed to checkout if authenticated
-    window.location.href = '/checkout';
+    // Proceed to checkout if authenticated - smooth navigation
+    navigate('/checkout');
   };
 
   if (items.length === 0) {

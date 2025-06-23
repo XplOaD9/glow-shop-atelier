@@ -51,13 +51,33 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }: AuthModalProps) =>
     e.preventDefault();
     setLoginError('');
 
-    const result = await signIn(loginData.email, loginData.password);
+    console.log('🔄 Starting login process...');
     
-    if (result.success) {
-      onClose();
-      setLoginData({ email: '', password: '' });
-    } else {
-      setLoginError(result.error || 'Eroare la conectare');
+    try {
+      // Add timeout to prevent infinite loading
+      const loginPromise = signIn(loginData.email, loginData.password);
+      const timeoutPromise = new Promise<{ success: false; error: string }>((_, reject) =>
+        setTimeout(() => reject(new Error('Login timeout after 30 seconds')), 30000)
+      );
+
+      const result = await Promise.race([loginPromise, timeoutPromise]);
+      
+      console.log('📊 Login result:', result);
+      
+      if (result.success) {
+        console.log('✅ Login successful, closing modal');
+        onClose();
+        setLoginData({ email: '', password: '' });
+        
+        // Let React handle the state updates naturally
+        console.log('🔄 Login completed - AuthContext will handle the rest');
+      } else {
+        console.log('❌ Login failed:', result.error);
+        setLoginError(result.error || 'Eroare la conectare');
+      }
+    } catch (error) {
+      console.error('💥 Login error:', error);
+      setLoginError('Conexiunea a expirat. Te rog încearcă din nou.');
     }
   };
 

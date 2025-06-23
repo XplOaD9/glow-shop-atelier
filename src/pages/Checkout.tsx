@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MapPin, User, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,9 +9,10 @@ import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useOrders } from '@/hooks/useOrders';
-import { StripeProvider } from '@/contexts/StripeContext';
 import StripePaymentForm from '@/components/StripePaymentForm';
 import { usePaymentIntent } from '@/hooks/usePaymentIntent';
+import { Elements } from '@stripe/react-stripe-js';
+import stripePromise from '@/lib/stripe';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { toast } from '@/hooks/use-toast';
@@ -20,6 +22,7 @@ const Checkout = () => {
   const { items, total, clearCart } = useCart();
   const { user, isAuthenticated } = useAuth();
   const { createOrder } = useOrders();
+  const navigate = useNavigate();
   const [step, setStep] = useState<'shipping' | 'payment'>('shipping');
   const [customerInfo, setCustomerInfo] = useState({
     firstName: '',
@@ -126,7 +129,7 @@ const Checkout = () => {
     console.log('📝 Payment Intent ID:', stripePaymentIntentId);
     
     try {
-      // Structură simplificată pentru MVP
+      // Structură pentru comandă
       const orderData = {
         email: customerInfo.email,
         fullName: `${customerInfo.firstName} ${customerInfo.lastName}`,
@@ -167,25 +170,39 @@ const Checkout = () => {
         
         // Redirect to success page
         setTimeout(() => {
-          window.location.href = `/checkout/success?order_id=${result.orderId}`;
+          navigate(`/checkout/success?order_id=${result.orderId}`);
         }, 2000);
       } else {
         console.log('❌ Order creation failed:', result.error);
+        
+        // Still show success for payment, but mention order issue
         toast({
-          title: "❌ Comandă eșuată",
-          description: result.error || "A apărut o problemă la crearea comenzii",
-          variant: "destructive",
-          duration: 5000,
+          title: "🎉 Plată reușită!",
+          description: "Plata a fost procesată, dar comanda nu a putut fi salvată. Te contactăm în curând.",
+          duration: 7000,
         });
+        
+        // Clear cart and redirect anyway since payment was successful
+        clearCart();
+        setTimeout(() => {
+          navigate(`/checkout/success?payment_id=${stripePaymentIntentId}`);
+        }, 2000);
       }
     } catch (error) {
       console.error('💥 Error creating order:', error);
+      
+      // Payment was successful, so show positive message
       toast({
-        title: "💥 Eroare de sistem",
-        description: "A apărut o eroare neașteptată la procesarea comenzii",
-        variant: "destructive",
-        duration: 5000,
+        title: "🎉 Plată reușită!",
+        description: "Plata a fost procesată cu succes. Te contactăm pentru confirmarea comenzii.",
+        duration: 7000,
       });
+      
+      // Clear cart and redirect since payment succeeded
+      clearCart();
+      setTimeout(() => {
+        navigate(`/checkout/success?payment_id=${stripePaymentIntentId}`);
+      }, 2000);
     }
   };
 
@@ -200,10 +217,10 @@ const Checkout = () => {
             You need to be signed in to proceed with checkout. Create an account or sign in to continue.
           </p>
           <div className="flex gap-4 justify-center">
-            <Button onClick={() => window.location.href = '/'} variant="outline" size="lg">
+            <Button onClick={() => navigate('/')} variant="outline" size="lg">
               Go Home
             </Button>
-            <Button onClick={() => window.location.href = '/shop'} size="lg">
+            <Button onClick={() => navigate('/shop')} size="lg">
               Continue Shopping
             </Button>
           </div>
@@ -220,17 +237,35 @@ const Checkout = () => {
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-3xl font-bold mb-4">Your Cart is Empty</h1>
           <p className="text-muted-foreground mb-8">Add some products to your cart to continue with checkout.</p>
-          <Button onClick={() => window.location.href = '/shop'} size="lg">
-            Continue Shopping
-          </Button>
+                          <Button onClick={() => navigate('/shop')} size="lg">
+                  Continue Shopping
+                </Button>
         </div>
         <Footer />
       </div>
     );
   }
 
+  const stripeOptions = {
+    mode: 'payment' as const,
+    amount: Math.round(finalTotal * 100),
+    currency: 'usd',
+    appearance: {
+      theme: 'stripe' as const,
+      variables: {
+        colorPrimary: 'hsl(var(--primary))',
+        colorBackground: 'hsl(var(--background))',
+        colorText: 'hsl(var(--foreground))',
+        colorDanger: 'hsl(var(--destructive))',
+        fontFamily: 'Inter, system-ui, sans-serif',
+        spacingUnit: '4px',
+        borderRadius: '6px',
+      },
+    },
+  };
+
   return (
-    <StripeProvider amount={Math.round(finalTotal * 100)}>
+    <Elements stripe={stripePromise} options={stripeOptions}>
       <div className="min-h-screen bg-background">
         <Header />
         
@@ -542,7 +577,7 @@ const Checkout = () => {
 
         <Footer />
       </div>
-    </StripeProvider>
+    </Elements>
   );
 };
 

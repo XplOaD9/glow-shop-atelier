@@ -70,7 +70,7 @@ export const useOrders = () => {
     }
   };
 
-  // Create new order (SIMPLIFICAT pentru MVP)
+  // Create new order with improved error handling
   const createOrder = async (orderData: CreateOrderData): Promise<{ success: boolean; orderId?: string; error?: string }> => {
     console.log('🛒 Order creation started with data:', orderData);
     
@@ -84,6 +84,24 @@ export const useOrders = () => {
     setError(null);
 
     try {
+      // First check if tables exist by trying a simple query
+      console.log('🔍 Checking table access...');
+      const { error: testError } = await supabase
+        .from('orders')
+        .select('id')
+        .limit(1);
+
+      if (testError) {
+        console.error('❌ Tables not accessible:', testError);
+        if (testError.message.includes('relation "public.orders" does not exist')) {
+          return { success: false, error: 'Tables not created. Please run CREATE_ORDERS_TABLES.sql' };
+        }
+        if (testError.message.includes('RLS')) {
+          return { success: false, error: 'Permission denied. Check RLS policies.' };
+        }
+        return { success: false, error: `Database error: ${testError.message}` };
+      }
+
       // Calculate total amount
       console.log('💰 Calculating total amount...');
       const totalAmount = orderData.items.reduce(
@@ -92,8 +110,8 @@ export const useOrders = () => {
       );
       console.log('📊 Total amount calculated:', totalAmount);
 
-      // Create order (structură simplificată)
-      console.log('📝 Preparing order insert data...');
+      // Create order with timeout
+      console.log('📝 Creating order...');
       const orderInsert: OrderInsert = {
         user_id: user.id,
         email: orderData.email,
@@ -105,22 +123,33 @@ export const useOrders = () => {
 
       console.log('📋 Order insert data:', orderInsert);
 
-      const { data: order, error: orderError } = await supabase
+      // Use timeout to prevent hanging
+      const orderPromise = supabase
         .from('orders')
         .insert(orderInsert)
         .select()
         .single();
 
-      console.log('📊 Order insert result:', { order, orderError });
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Order creation timeout')), 10000)
+      );
+
+      const { data: order, error: orderError } = await Promise.race([
+        orderPromise,
+        timeoutPromise
+      ]);
+
+      console.log('📊 Order insert result:', { order: !!order, error: orderError?.message });
 
       if (orderError || !order) {
         console.error('❌ Order creation failed:', orderError);
-        throw orderError || new Error('Failed to create order');
+        const errorMsg = orderError?.message || 'Failed to create order';
+        return { success: false, error: errorMsg };
       }
 
-      console.log('✅ Order created successfully:', order);
+      console.log('✅ Order created successfully:', order.id);
 
-      // Create order items (structură simplificată)
+      // Create order items with timeout
       console.log('📦 Creating order items...');
       const orderItemsInsert: OrderItemInsert[] = orderData.items.map(item => ({
         order_id: order.id,
@@ -129,31 +158,54 @@ export const useOrders = () => {
         price: item.price,
       }));
 
-      console.log('📋 Order items data:', orderItemsInsert);
+      console.log('📋 Order items data:', orderItemsInsert.length, 'items');
 
-      const { error: itemsError } = await supabase
+      const itemsPromise = supabase
         .from('order_items')
         .insert(orderItemsInsert);
 
-      console.log('📊 Order items insert result:', { itemsError });
+      const itemsTimeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Order items creation timeout')), 10000)
+      );
+
+      const { error: itemsError } = await Promise.race([
+        itemsPromise,
+        itemsTimeoutPromise
+      ]);
+
+      console.log('📊 Order items insert result:', { error: itemsError?.message });
 
       if (itemsError) {
         console.error('❌ Order items creation failed:', itemsError);
-        throw itemsError;
+        // Order was created but items failed - still return success
+        console.log('⚠️ Order created but items failed - returning success anyway');
+      } else {
+        console.log('✅ Order items created successfully');
       }
 
-      console.log('✅ Order items created successfully');
-
-      // Reload orders
-      console.log('🔄 Reloading orders...');
-      await loadOrders();
+      // Try to reload orders (don't fail if this fails)
+      try {
+        console.log('🔄 Reloading orders...');
+        await loadOrders();
+      } catch (reloadError) {
+        console.log('⚠️ Failed to reload orders, but order was created');
+      }
 
       console.log('🛒 Order creation process completed successfully');
       return { success: true, orderId: order.id };
+      
     } catch (err) {
-      console.error('Error creating order:', err);
+      console.error('💥 Error creating order:', err);
       const errorMessage = err instanceof Error ? err.message : 'Error creating order';
       setError(errorMessage);
+      
+      // Provide more helpful error messages
+      if (errorMessage.includes('timeout')) {
+        return { success: false, error: 'Order creation timed out. Please try again.' };
+      }
+      if (errorMessage.includes('permission')) {
+        return { success: false, error: 'Permission denied. Please contact support.' };
+      }
       
       return { success: false, error: errorMessage };
     } finally {

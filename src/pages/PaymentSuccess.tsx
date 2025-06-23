@@ -34,7 +34,7 @@ const PaymentSuccess = () => {
         <Header />
         <div className="container mx-auto px-4 py-16 text-center">
           <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p>Se încarcă detaliile comenzii...</p>
+          <p>Loading order details...</p>
         </div>
         <Footer />
       </div>
@@ -46,13 +46,13 @@ const PaymentSuccess = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-3xl font-bold mb-4 text-red-600">Comandă nu a fost găsită</h1>
+          <h1 className="text-3xl font-bold mb-4 text-red-600">Order Not Found</h1>
           <p className="text-muted-foreground mb-8">
-            Nu am putut găsi această comandă. Verifică linkul sau contactează-ne pentru asistență.
+            We couldn't find this order. Please check the link or contact us for assistance.
           </p>
           <div className="flex gap-4 justify-center">
             <Button asChild>
-              <Link to="/">Acasă</Link>
+              <Link to="/">Home</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link to="/contact">Contact</Link>
@@ -66,9 +66,9 @@ const PaymentSuccess = () => {
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      'pending': { color: 'bg-yellow-100 text-yellow-800', text: 'În așteptare' },
-      'completed': { color: 'bg-green-100 text-green-800', text: 'Finalizat' },
-      'cancelled': { color: 'bg-red-100 text-red-800', text: 'Anulat' }
+      'pending': { color: 'bg-yellow-100 text-yellow-800', text: 'Pending' },
+      'completed': { color: 'bg-green-100 text-green-800', text: 'Completed' },
+      'cancelled': { color: 'bg-red-100 text-red-800', text: 'Cancelled' }
     };
     
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
@@ -81,9 +81,9 @@ const PaymentSuccess = () => {
 
   const getPaymentStatusBadge = (status: string) => {
     const statusConfig = {
-      'pending': { color: 'bg-yellow-100 text-yellow-800', text: 'În așteptare' },
-      'paid': { color: 'bg-green-100 text-green-800', text: 'Plătit' },
-      'failed': { color: 'bg-red-100 text-red-800', text: 'Eșuat' }
+      'pending': { color: 'bg-yellow-100 text-yellow-800', text: 'Pending' },
+      'paid': { color: 'bg-green-100 text-green-800', text: 'Paid' },
+      'failed': { color: 'bg-red-100 text-red-800', text: 'Failed' }
     };
     
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
@@ -105,10 +105,10 @@ const PaymentSuccess = () => {
             <CheckCircle className="w-8 h-8 text-green-600" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Comandă Confirmată!
+            Order Confirmed!
           </h1>
           <p className="text-lg text-muted-foreground">
-            Mulțumim pentru comandă! Am primit plata ta și vom procesa comanda în curând.
+            Thank you for your order! We have received your payment and will process your order soon.
           </p>
         </div>
 
@@ -120,20 +120,20 @@ const PaymentSuccess = () => {
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Package className="w-5 h-5" />
-                  <span>Detalii Comandă</span>
+                  <span>Order Details</span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">Numărul comenzii</p>
+                    <p className="text-sm text-muted-foreground">Order Number</p>
                     <p className="font-medium">{order.order_number}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Data comenzii</p>
+                    <p className="text-sm text-muted-foreground">Order Date</p>
                     <p className="font-medium flex items-center">
                       <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(order.created_at).toLocaleDateString('ro-RO', {
+                      {new Date(order.created_at).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'
@@ -141,11 +141,11 @@ const PaymentSuccess = () => {
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Status comandă</p>
+                    <p className="text-sm text-muted-foreground">Order Status</p>
                     <p className="font-medium">{getStatusBadge(order.status)}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Status plată</p>
+                    <p className="text-sm text-muted-foreground">Payment Status</p>
                     <p className="font-medium">{getPaymentStatusBadge(order.payment_status)}</p>
                   </div>
                 </div>
@@ -157,7 +157,7 @@ const PaymentSuccess = () => {
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <MapPin className="w-5 h-5" />
-                  <span>Adresa de Livrare</span>
+                  <span>Shipping Address</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -166,7 +166,7 @@ const PaymentSuccess = () => {
                   <p>{order.address}</p>
                   {order.phone && (
                     <p className="text-sm text-muted-foreground">
-                      Telefon: {order.phone}
+                      Phone: {order.phone}
                     </p>
                   )}
                 </div>
@@ -176,7 +176,7 @@ const PaymentSuccess = () => {
             {/* Order Items */}
             <Card>
               <CardHeader>
-                <CardTitle>Produse Comandate</CardTitle>
+                <CardTitle>Ordered Products</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -185,11 +185,11 @@ const PaymentSuccess = () => {
                       <div className="flex-1">
                         <h4 className="font-medium">{item.product_name}</h4>
                         <p className="text-sm text-muted-foreground">
-                          Cantitate: {item.quantity}
+                          Quantity: {item.quantity}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium">{item.price} RON</p>
+                        <p className="font-medium">€{item.price}</p>
                       </div>
                     </div>
                   ))}
@@ -200,7 +200,7 @@ const PaymentSuccess = () => {
             {/* Next Steps */}
             <Card>
               <CardHeader>
-                <CardTitle>Ce urmează?</CardTitle>
+                <CardTitle>What's Next?</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-start space-x-3">
@@ -208,9 +208,9 @@ const PaymentSuccess = () => {
                     <span className="text-blue-600 text-xs font-bold">1</span>
                   </div>
                   <div>
-                    <p className="font-medium">Confirmare email</p>
+                    <p className="font-medium">Email Confirmation</p>
                     <p className="text-sm text-muted-foreground">
-                      Vei primi un email de confirmare la {order.email}
+                      You will receive a confirmation email at {order.email}
                     </p>
                   </div>
                 </div>
@@ -219,9 +219,9 @@ const PaymentSuccess = () => {
                     <span className="text-blue-600 text-xs font-bold">2</span>
                   </div>
                   <div>
-                    <p className="font-medium">Procesare comandă</p>
+                    <p className="font-medium">Order Processing</p>
                     <p className="text-sm text-muted-foreground">
-                      Comanda ta va fi procesată în 1-2 zile lucrătoare
+                      Your order will be processed within 1-2 business days
                     </p>
                   </div>
                 </div>
@@ -230,9 +230,9 @@ const PaymentSuccess = () => {
                     <span className="text-blue-600 text-xs font-bold">3</span>
                   </div>
                   <div>
-                    <p className="font-medium">Expediere</p>
+                    <p className="font-medium">Shipping</p>
                     <p className="text-sm text-muted-foreground">
-                      Vei primi un cod de urmărire când comanda va fi expediată
+                      You will receive a tracking code when your order is shipped
                     </p>
                   </div>
                 </div>
@@ -244,17 +244,17 @@ const PaymentSuccess = () => {
           <div className="space-y-6">
             <Card className="sticky top-6">
               <CardHeader>
-                <CardTitle>Rezumat Comandă</CardTitle>
+                <CardTitle>Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>{(order.total_amount - 10).toFixed(2)} RON</span>
+                    <span>€{(order.total_amount - 10).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Livrare</span>
-                    <span>10.00 RON</span>
+                    <span>Shipping</span>
+                    <span>€10.00</span>
                   </div>
                 </div>
 
@@ -262,7 +262,7 @@ const PaymentSuccess = () => {
 
                 <div className="flex justify-between text-lg font-semibold">
                   <span>Total</span>
-                  <span>{order.total_amount} RON</span>
+                  <span>€{order.total_amount}</span>
                 </div>
 
                 <Separator />
@@ -270,20 +270,20 @@ const PaymentSuccess = () => {
                 <div className="space-y-3">
                   <Button className="w-full" asChild>
                     <Link to="/profile">
-                      Vizualizează Toate Comenzile
+                      View All Orders
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Link>
                   </Button>
                   
                   <Button variant="outline" className="w-full">
                     <Download className="w-4 h-4 mr-2" />
-                    Descarcă Factura
+                    Download Invoice
                   </Button>
                   
                   <Button variant="outline" className="w-full" asChild>
                     <Link to="/contact">
                       <Mail className="w-4 h-4 mr-2" />
-                      Contactează-ne
+                      Contact Us
                     </Link>
                   </Button>
                 </div>
@@ -297,11 +297,11 @@ const PaymentSuccess = () => {
         {/* Continue Shopping */}
         <div className="text-center mt-12">
           <h3 className="text-lg font-semibold mb-4">
-            Mulțumim pentru încrederea acordată!
+            Thank you for your trust!
           </h3>
           <Button size="lg" asChild>
             <Link to="/shop">
-              Continuă Cumpărăturile
+              Continue Shopping
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
           </Button>

@@ -19,6 +19,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, userData: { fullName: string; phone?: string }) => Promise<{ success: boolean; error?: string }>;
   signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   signOut: () => void;
+  clearSession: () => void;
   loading: boolean;
   isAuthenticated: boolean;
   isAdmin: boolean;
@@ -54,31 +55,73 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Function to load user profile from Supabase
   const loadUserProfile = async (userId: string): Promise<User | null> => {
     try {
-      const { data: profile, error } = await supabase
+      console.log('🔍 Loading profile for user:', userId);
+      
+      // Add timeout to the query itself
+      const queryPromise = supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .single();
+      
+      console.log('⏱️ Starting profile query...');
+      
+      const { data: profile, error } = await Promise.race([
+        queryPromise,
+        new Promise<{ data: null, error: { message: string } }>((_, reject) =>
+          setTimeout(() => reject({ data: null, error: { message: 'Query timeout after 5 seconds' } }), 5000)
+        )
+      ]);
+
+      console.log('📊 Profile query result:', { 
+        hasProfile: !!profile, 
+        hasError: !!error,
+        errorMessage: error?.message,
+        profileData: profile ? { id: profile.id, email: profile.email } : null
+      });
 
       if (error) {
-        console.error('Error loading profile:', error);
+        console.error('❌ Error loading profile:', error);
+        
+        if (error.code === 'PGRST116') {
+          console.log('🚨 Profile not found - this may cause logout');
+        }
+        
         return null;
       }
 
-      return profile ? profileToUser(profile) : null;
+      const user = profile ? profileToUser(profile) : null;
+      console.log('✅ Profile converted to user:', user?.email);
+      return user;
     } catch (error) {
-      console.error('Error loading profile:', error);
+      console.error('💥 Exception loading profile:', error);
       return null;
     }
   };
 
   // Supabase Session Management
   useEffect(() => {
+    console.log('🔄 AuthContext: Setting up session management...');
+    
     // Get current session
     supabase.auth.getSession().then(async ({ data: { session } }) => {
+      console.log('📊 Initial session check:', { 
+        hasSession: !!session, 
+        hasUser: !!session?.user,
+        userEmail: session?.user?.email 
+      });
+      
       if (session?.user) {
+        console.log('✅ Found existing session, loading profile...');
         const profile = await loadUserProfile(session.user.id);
-        setUser(profile);
+        if (profile) {
+          setUser(profile);
+          console.log('✅ Profile loaded for existing session:', profile.email);
+        } else {
+          console.log('⚠️ No profile found for existing session');
+        }
+      } else {
+        console.log('ℹ️ No existing session found');
       }
       setLoading(false);
     });
@@ -86,17 +129,46 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('🔔 Auth state changed:', { 
+          event, 
+          hasSession: !!session,
+          hasUser: !!session?.user,
+          userEmail: session?.user?.email 
+        });
+        
         if (session?.user) {
+          console.log('✅ User authenticated, loading profile...');
           const profile = await loadUserProfile(session.user.id);
-          setUser(profile);
+          if (profile) {
+            setUser(profile);
+            console.log('✅ Profile set for user:', profile.email);
+          } else {
+            console.log('⚠️ No profile found, creating basic user for session');
+            
+            // Create a basic user object to allow functionality even without profile
+            const basicUser: User = {
+              id: session.user.id,
+              email: session.user.email || '',
+              fullName: session.user.user_metadata?.full_name || 'User',
+              role: 'user',
+              createdAt: session.user.created_at || new Date().toISOString()
+            };
+            
+            setUser(basicUser);
+            console.log('✅ Basic user created for session:', basicUser.email);
+          }
         } else {
+          console.log('❌ No session, clearing user');
           setUser(null);
         }
         setLoading(false);
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      console.log('🔄 AuthContext: Cleaning up subscription');
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signUp = async (
@@ -109,19 +181,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       // Validate input
       if (!email || !password || !userData.fullName) {
-        return { success: false, error: 'Toate câmpurile obligatorii trebuie completate' };
+        return { success: false, error: 'All required fields must be completed' };
       }
 
       if (password.length < 6) {
-        return { success: false, error: 'Parola trebuie să aibă cel puțin 6 caractere' };
+        return { success: false, error: 'Password must be at least 6 characters' };
       }
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        return { success: false, error: 'Te rog introdu o adresă de email validă' };
+        return { success: false, error: 'Please enter a valid email address' };
+      }
+
+      console.log('🔄 Starting signup process...');
+
+      // Test if profiles table is accessible first
+      console.log('🔍 Checking profiles table...');
+      const { error: profilesTestError } = await supabase
+        .from('profiles')
+        .select('id')
+        .limit(1);
+
+      if (profilesTestError) {
+        console.error('❌ Profiles table not accessible:', profilesTestError);
+        if (profilesTestError.message.includes('relation "public.profiles" does not exist')) {
+          return { success: false, error: 'Database error saving new user' };
+        }
       }
 
       // Supabase Authentication
+      console.log('📝 Creating user account...');
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -133,24 +222,56 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       });
 
+      console.log('📊 Signup result:', { 
+        success: !!data.user, 
+        error: error?.message,
+        needsConfirmation: !!data.user && !data.session 
+      });
+
       if (error) {
+        console.error('❌ Signup error:', error);
+        
         if (error.message.includes('already registered')) {
-          return { success: false, error: 'Un cont cu acest email există deja' };
+          return { success: false, error: 'An account with this email already exists' };
+        }
+        if (error.message.includes('Database error')) {
+          return { success: false, error: 'Database error saving new user' };
+        }
+        if (error.message.includes('trigger')) {
+          return { success: false, error: 'Database error saving new user' };
         }
         return { success: false, error: error.message };
       }
 
       if (data.user) {
-        toast({
-          title: "Verifică-ți emailul!",
-          description: "Am trimis un link de confirmare la adresa ta de email",
-        });
+        if (data.session) {
+          // User is immediately signed in (email confirmation disabled)
+          console.log('✅ User created and signed in immediately');
+          toast({
+            title: "Account created successfully!",
+            description: "Welcome! Your account has been created.",
+          });
+        } else {
+          // Email confirmation required
+          console.log('📧 User created, email confirmation required');
+          toast({
+            title: "Check your email!",
+            description: "We sent a confirmation link to your email address",
+          });
+        }
       }
 
       return { success: true };
     } catch (error) {
-      console.error('SignUp error:', error);
-      return { success: false, error: 'A apărut o eroare la înregistrare' };
+      console.error('💥 SignUp error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred during registration';
+      
+      // Check for specific database errors
+      if (errorMessage.includes('profiles') || errorMessage.includes('trigger') || errorMessage.includes('function')) {
+        return { success: false, error: 'Database error saving new user' };
+      }
+      
+      return { success: false, error: errorMessage };
     } finally {
       setLoading(false);
     }
@@ -168,58 +289,101 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return { success: false, error: 'Email și parola sunt obligatorii' };
       }
 
+      console.log('🔄 Starting sign in process...');
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
+      console.log('📊 Sign in response:', { data: !!data.user, error: error?.message });
+
       if (error) {
+        console.error('❌ Sign in error:', error);
+        
         if (error.message.includes('Invalid login credentials')) {
           return { success: false, error: 'Email sau parolă incorectă' };
+        }
+        if (error.message.includes('Email not confirmed')) {
+          return { success: false, error: 'Te rog confirmă email-ul înainte să te conectezi' };
         }
         return { success: false, error: error.message };
       }
 
       if (data.user) {
-        // Load profile from database
-        const profile = await loadUserProfile(data.user.id);
+        console.log('✅ User authenticated:', data.user.email);
         
-        if (profile) {
-          setUser(profile);
-          
-          toast({
-            title: "Autentificare reușită!",
-            description: `Bun venit${profile.role === 'admin' ? ' înapoi, Admin' : ''}, ${profile.fullName}!`,
-          });
-        }
+        // Don't wait for profile loading in signIn - let onAuthStateChange handle it
+        // This prevents the modal from getting stuck
+        toast({
+          title: "Autentificare reușită!",
+          description: "Bun venit! Se încarcă profilul...",
+        });
+        
+        console.log('✅ Login successful, profile will be loaded by auth state change');
       }
 
       return { success: true };
     } catch (error) {
-      console.error('SignIn error:', error);
+      console.error('💥 SignIn error:', error);
       return { success: false, error: 'A apărut o eroare la autentificare' };
     } finally {
       setLoading(false);
+      console.log('🔄 Sign in process completed');
     }
   };
 
   const signOut = async () => {
     try {
+      console.log('🔄 Starting sign out process...');
+      
+      // Clear Supabase session
       await supabase.auth.signOut();
+      
+      // Clear local state
       setUser(null);
+      
+      // Clear any cached data
+      localStorage.removeItem('supabase.auth.token');
+      sessionStorage.clear();
+      
+      console.log('✅ Sign out completed');
       
       toast({
         title: "Deconectare reușită",
         description: "Ai fost deconectat din contul tău",
       });
+      
     } catch (error) {
-      console.error('SignOut error:', error);
-      toast({
-        title: "Eroare la deconectare",
-        description: "A apărut o problemă la deconectare",
-        variant: "destructive",
-      });
+      console.error('❌ SignOut error:', error);
+      
+      // Force clear even if Supabase fails
+      setUser(null);
+      localStorage.clear();
+      sessionStorage.clear();
+      
+              toast({
+          title: "Session cleared",
+          description: "Toate datele de sesiune au fost șterse",
+        });
     }
+  };
+
+  // Add function to force clear session (for debugging)
+  const clearSession = () => {
+    console.log('🗑️ Force clearing all session data...');
+    setUser(null);
+    setLoading(false);
+    localStorage.clear();
+    sessionStorage.clear();
+    
+    // Clear Supabase session without waiting
+    supabase.auth.signOut().catch(console.error);
+    
+          toast({
+        title: "Session force cleared",
+        description: "Toate datele au fost șterse",
+      });
   };
 
   const isAuthenticated = !!user;
@@ -230,6 +394,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signUp,
     signIn,
     signOut,
+    clearSession,
     loading,
     isAuthenticated,
     isAdmin,

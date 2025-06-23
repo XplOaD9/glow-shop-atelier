@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useCart } from '@/contexts/CartContext';
 
 interface PaymentIntentData {
@@ -34,6 +34,14 @@ export const usePaymentIntent = (
   const { items, total } = useCart();
 
   const { quickMode = false, delayMs = 1500 } = options;
+
+  // Create stable reference for customerInfo to prevent infinite loops
+  const customerInfoString = useMemo(() => 
+    customerInfo ? JSON.stringify(customerInfo) : null,
+    [customerInfo?.email, customerInfo?.name, customerInfo?.address?.line1, 
+     customerInfo?.address?.city, customerInfo?.address?.state, 
+     customerInfo?.address?.postal_code, customerInfo?.address?.country]
+  );
 
   useEffect(() => {
     if (!customerInfo || items.length === 0) {
@@ -84,7 +92,7 @@ export const usePaymentIntent = (
     };
 
     createPaymentIntent();
-  }, [customerInfo, items, total, quickMode, delayMs]);
+  }, [customerInfoString, items.length, total, quickMode, delayMs]); // Fixed dependencies
 
   return { clientSecret, error, loading };
 }; 
