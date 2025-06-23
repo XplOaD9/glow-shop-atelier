@@ -1,11 +1,16 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
+
+type Profile = Tables<'profiles'>;
 
 interface User {
   id: string;
   email: string;
   fullName: string;
   phone?: string;
+  role: 'user' | 'admin';
   createdAt: string;
 }
 
@@ -16,57 +21,13 @@ interface AuthContextType {
   signOut: () => void;
   loading: boolean;
   isAuthenticated: boolean;
+  isAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Helper functions for localStorage
-const AUTH_STORAGE_KEY = 'ergocharge_auth';
-const USERS_STORAGE_KEY = 'ergocharge_users';
-
-const loadUsersFromStorage = (): User[] => {
-  try {
-    if (typeof window === 'undefined') return [];
-    const savedUsers = localStorage.getItem(USERS_STORAGE_KEY);
-    return savedUsers ? JSON.parse(savedUsers) : [];
-  } catch (error) {
-    console.warn('Error loading users from localStorage:', error);
-    return [];
-  }
-};
-
-const saveUsersToStorage = (users: User[]) => {
-  try {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
-  } catch (error) {
-    console.warn('Error saving users to localStorage:', error);
-  }
-};
-
-const loadCurrentUserFromStorage = (): User | null => {
-  try {
-    if (typeof window === 'undefined') return null;
-    const savedAuth = localStorage.getItem(AUTH_STORAGE_KEY);
-    return savedAuth ? JSON.parse(savedAuth) : null;
-  } catch (error) {
-    console.warn('Error loading auth from localStorage:', error);
-    return null;
-  }
-};
-
-const saveCurrentUserToStorage = (user: User | null) => {
-  try {
-    if (typeof window === 'undefined') return;
-    if (user) {
-      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
-    } else {
-      localStorage.removeItem(AUTH_STORAGE_KEY);
-    }
-  } catch (error) {
-    console.warn('Error saving auth to localStorage:', error);
-  }
-};
+// Admin email configuration
+const ADMIN_EMAILS = ['alhakim_sami@yahoo.ro'];
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -80,11 +41,62 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Load user from localStorage on mount
+  // Function to convert Profile to User
+  const profileToUser = (profile: Profile): User => ({
+    id: profile.id,
+    email: profile.email,
+    fullName: profile.full_name,
+    phone: profile.phone || undefined,
+    role: profile.role,
+    createdAt: profile.created_at,
+  });
+
+  // Function to load user profile from Supabase
+  const loadUserProfile = async (userId: string): Promise<User | null> => {
+    try {
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error loading profile:', error);
+        return null;
+      }
+
+      return profile ? profileToUser(profile) : null;
+    } catch (error) {
+      console.error('Error loading profile:', error);
+      return null;
+    }
+  };
+
+  // Supabase Session Management
   useEffect(() => {
-    const savedUser = loadCurrentUserFromStorage();
-    setUser(savedUser);
-    setLoading(false);
+    // Get current session
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (session?.user) {
+        const profile = await loadUserProfile(session.user.id);
+        setUser(profile);
+      }
+      setLoading(false);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session?.user) {
+          const profile = await loadUserProfile(session.user.id);
+          setUser(profile);
+        } else {
+          setUser(null);
+        }
+        setLoading(false);
+      }
+    );
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const signUp = async (
@@ -97,52 +109,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       // Validate input
       if (!email || !password || !userData.fullName) {
-        return { success: false, error: 'All required fields must be completed' };
+        return { success: false, error: 'Toate câmpurile obligatorii trebuie completate' };
       }
 
       if (password.length < 6) {
-        return { success: false, error: 'Password must be at least 6 characters' };
+        return { success: false, error: 'Parola trebuie să aibă cel puțin 6 caractere' };
       }
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        return { success: false, error: 'Please enter a valid email address' };
+        return { success: false, error: 'Te rog introdu o adresă de email validă' };
       }
 
-      // Check if user already exists
-      const existingUsers = loadUsersFromStorage();
-      const userExists = existingUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
-      
-      if (userExists) {
-        return { success: false, error: 'An account with this email already exists' };
-      }
-
-      // Create new user
-      const newUser: User = {
-        id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        email: email.toLowerCase(),
-        fullName: userData.fullName,
-        phone: userData.phone,
-        createdAt: new Date().toISOString()
-      };
-
-      // Save to users list
-      const updatedUsers = [...existingUsers, newUser];
-      saveUsersToStorage(updatedUsers);
-
-      // Set as current user
-      setUser(newUser);
-      saveCurrentUserToStorage(newUser);
-
-      toast({
-        title: "Account Created Successfully!",
-        description: `Welcome, ${userData.fullName}!`,
+      // Supabase Authentication
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: userData.fullName,
+            phone: userData.phone,
+          }
+        }
       });
+
+      if (error) {
+        if (error.message.includes('already registered')) {
+          return { success: false, error: 'Un cont cu acest email există deja' };
+        }
+        return { success: false, error: error.message };
+      }
+
+      if (data.user) {
+        toast({
+          title: "Verifică-ți emailul!",
+          description: "Am trimis un link de confirmare la adresa ta de email",
+        });
+      }
 
       return { success: true };
     } catch (error) {
       console.error('SignUp error:', error);
-      return { success: false, error: 'An error occurred while creating the account' };
+      return { success: false, error: 'A apărut o eroare la înregistrare' };
     } finally {
       setLoading(false);
     }
@@ -157,58 +165,78 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       // Validate input
       if (!email || !password) {
-        return { success: false, error: 'Email and password are required' };
+        return { success: false, error: 'Email și parola sunt obligatorii' };
       }
 
-      // Find user
-      const existingUsers = loadUsersFromStorage();
-      const user = existingUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
-
-      if (!user) {
-        return { success: false, error: 'Invalid email or password' };
-      }
-
-      // For demo purposes, we'll accept any password for existing users
-      // In production with Supabase, this will be handled properly
-      
-      setUser(user);
-      saveCurrentUserToStorage(user);
-
-      toast({
-        title: "Sign In Successful!",
-        description: `Welcome back, ${user.fullName}!`,
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
+
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          return { success: false, error: 'Email sau parolă incorectă' };
+        }
+        return { success: false, error: error.message };
+      }
+
+      if (data.user) {
+        // Load profile from database
+        const profile = await loadUserProfile(data.user.id);
+        
+        if (profile) {
+          setUser(profile);
+          
+          toast({
+            title: "Autentificare reușită!",
+            description: `Bun venit${profile.role === 'admin' ? ' înapoi, Admin' : ''}, ${profile.fullName}!`,
+          });
+        }
+      }
 
       return { success: true };
     } catch (error) {
       console.error('SignIn error:', error);
-      return { success: false, error: 'An error occurred during sign in' };
+      return { success: false, error: 'A apărut o eroare la autentificare' };
     } finally {
       setLoading(false);
     }
   };
 
-  const signOut = () => {
-    setUser(null);
-    saveCurrentUserToStorage(null);
-    
-    toast({
-      title: "Signed Out Successfully",
-      description: "You have been signed out of your account",
-    });
+  const signOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      
+      toast({
+        title: "Deconectare reușită",
+        description: "Ai fost deconectat din contul tău",
+      });
+    } catch (error) {
+      console.error('SignOut error:', error);
+      toast({
+        title: "Eroare la deconectare",
+        description: "A apărut o problemă la deconectare",
+        variant: "destructive",
+      });
+    }
   };
 
   const isAuthenticated = !!user;
+  const isAdmin = user?.role === 'admin';
+
+  const value: AuthContextType = {
+    user,
+    signUp,
+    signIn,
+    signOut,
+    loading,
+    isAuthenticated,
+    isAdmin,
+  };
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      signUp,
-      signIn,
-      signOut,
-      loading,
-      isAuthenticated
-    }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

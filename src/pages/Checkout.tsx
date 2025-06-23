@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useOrders } from '@/hooks/useOrders';
 import { StripeProvider } from '@/contexts/StripeContext';
 import StripePaymentForm from '@/components/StripePaymentForm';
 import { usePaymentIntent } from '@/hooks/usePaymentIntent';
@@ -16,8 +17,9 @@ import { toast } from '@/hooks/use-toast';
 import { romanianCities, romanianCounties, getCountyByCity } from '@/data/cities';
 
 const Checkout = () => {
-  const { items, total } = useCart();
+  const { items, total, clearCart } = useCart();
   const { user, isAuthenticated } = useAuth();
+  const { createOrder } = useOrders();
   const [step, setStep] = useState<'shipping' | 'payment'>('shipping');
   const [customerInfo, setCustomerInfo] = useState({
     firstName: '',
@@ -116,6 +118,75 @@ const Checkout = () => {
       city: cityData?.name || cityValue,
       state: county || prev.state,
     }));
+  };
+
+  // Handle successful payment and create order
+  const handlePaymentSuccess = async (stripePaymentIntentId: string) => {
+    console.log('🔄 Starting order creation process...');
+    console.log('📝 Payment Intent ID:', stripePaymentIntentId);
+    
+    try {
+      // Structură simplificată pentru MVP
+      const orderData = {
+        email: customerInfo.email,
+        fullName: `${customerInfo.firstName} ${customerInfo.lastName}`,
+        phone: customerInfo.phone,
+        address: customerInfo.address,
+        items: items.map(item => ({
+          productName: item.name,
+          quantity: item.quantity,
+          price: item.price * item.quantity, // preț total pentru item
+        })),
+      };
+
+      console.log('📦 Order data prepared:', orderData);
+
+      // Pop-up pentru procesare
+      toast({
+        title: "🔄 Procesare comandă...",
+        description: "Se creează comanda ta în sistem",
+        duration: 3000,
+      });
+
+      const result = await createOrder(orderData);
+
+      console.log('📝 Order creation result:', result);
+
+      if (result.success) {
+        // Pop-up de succes
+        toast({
+          title: "🎉 Comandă plasată cu succes!",
+          description: `Comanda ta a fost înregistrată cu ID: ${result.orderId}`,
+          duration: 5000,
+        });
+
+        console.log('✅ Order created successfully, orderId:', result.orderId);
+        
+        // Clear cart after successful order
+        clearCart();
+        
+        // Redirect to success page
+        setTimeout(() => {
+          window.location.href = `/checkout/success?order_id=${result.orderId}`;
+        }, 2000);
+      } else {
+        console.log('❌ Order creation failed:', result.error);
+        toast({
+          title: "❌ Comandă eșuată",
+          description: result.error || "A apărut o problemă la crearea comenzii",
+          variant: "destructive",
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      console.error('💥 Error creating order:', error);
+      toast({
+        title: "💥 Eroare de sistem",
+        description: "A apărut o eroare neașteptată la procesarea comenzii",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
   };
 
   // Redirect if not authenticated
@@ -378,6 +449,7 @@ const Checkout = () => {
                           country: customerInfo.country,
                         },
                       }}
+                      onPaymentSuccess={handlePaymentSuccess}
                       quickMode={true} // Enable quick mode for faster testing
                     />
                   ) : (

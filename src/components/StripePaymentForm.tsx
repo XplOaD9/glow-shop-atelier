@@ -19,10 +19,11 @@ interface StripePaymentFormProps {
       country: string;
     };
   };
+  onPaymentSuccess?: (stripePaymentIntentId: string) => Promise<void>;
   quickMode?: boolean; // New prop for quick testing
 }
 
-const StripePaymentForm = ({ clientSecret, customerInfo, quickMode = false }: StripePaymentFormProps) => {
+const StripePaymentForm = ({ clientSecret, customerInfo, onPaymentSuccess, quickMode = false }: StripePaymentFormProps) => {
   const { clearCart, total } = useCart();
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [redirectTimeout, setRedirectTimeout] = useState(2000); // Configurable timeout
@@ -139,18 +140,44 @@ const StripePaymentForm = ({ clientSecret, customerInfo, quickMode = false }: St
     return `${window.location.origin}/stripe-demo.html?${params.toString()}`;
   };
 
-  const handlePaymentCompletion = () => {
+  const handlePaymentCompletion = async () => {
+    console.log('💳 Payment completion started...');
     setIsRedirecting(false);
     
-    // Generate random order ID
-    const orderId = `ORD-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
+    // Generate demo payment intent ID
+    const demoPaymentIntentId = `pi_demo_${Math.random().toString(36).substr(2, 8)}`;
+    console.log('📝 Generated demo payment intent ID:', demoPaymentIntentId);
     
-    // Clear cart
-    clearCart();
+    // Pop-up pentru confirmare plată
+    toast({
+      title: "💳 Plată confirmată!",
+      description: "Plata a fost procesată cu succes. Se creează comanda...",
+      duration: 3000,
+    });
     
-    // Set order details and show modal
-    setOrderDetails({ orderId, amount: finalTotal });
-    setShowSuccessModal(true);
+    // If onPaymentSuccess callback is provided, use it (real Supabase integration)
+    if (onPaymentSuccess) {
+      console.log('🔄 Calling onPaymentSuccess callback...');
+      try {
+        await onPaymentSuccess(demoPaymentIntentId);
+        console.log('✅ onPaymentSuccess completed successfully');
+      } catch (error) {
+        console.error('❌ Error in onPaymentSuccess:', error);
+        toast({
+          title: "❌ Eroare la procesarea comenzii",
+          description: "Plata a fost procesată dar comanda nu a putut fi creată",
+          variant: "destructive",
+          duration: 5000,
+        });
+      }
+    } else {
+      // Fallback to old behavior (show modal)
+      console.log('📄 Using fallback modal behavior');
+      const orderId = `ORD-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
+      clearCart();
+      setOrderDetails({ orderId, amount: finalTotal });
+      setShowSuccessModal(true);
+    }
   };
 
   const handleModalClose = () => {

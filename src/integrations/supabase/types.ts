@@ -9,7 +9,150 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          id: string
+          email: string
+          full_name: string
+          phone: string | null
+          role: 'user' | 'admin'
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          email: string
+          full_name: string
+          phone?: string | null
+          role?: 'user' | 'admin'
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          full_name?: string
+          phone?: string | null
+          role?: 'user' | 'admin'
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      orders: {
+        Row: {
+          id: string
+          user_id: string | null
+          order_number: string
+          email: string
+          full_name: string
+          phone: string | null
+          address: string
+          total_amount: number
+          status: 'pending' | 'completed' | 'cancelled'
+          payment_status: 'pending' | 'paid' | 'failed'
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          order_number?: string
+          email: string
+          full_name: string
+          phone?: string | null
+          address: string
+          total_amount: number
+          status?: 'pending' | 'completed' | 'cancelled'
+          payment_status?: 'pending' | 'paid' | 'failed'
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          order_number?: string
+          email?: string
+          full_name?: string
+          phone?: string | null
+          address?: string
+          total_amount?: number
+          status?: 'pending' | 'completed' | 'cancelled'
+          payment_status?: 'pending' | 'paid' | 'failed'
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      order_items: {
+        Row: {
+          id: string
+          order_id: string
+          product_name: string
+          quantity: number
+          price: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          order_id: string
+          product_name: string
+          quantity: number
+          price: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          order_id?: string
+          product_name?: string
+          quantity?: number
+          price?: number
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      newsletter_subscribers: {
+        Row: {
+          id: string
+          email: string
+          full_name: string | null
+          status: 'active' | 'unsubscribed'
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          email: string
+          full_name?: string | null
+          status?: 'active' | 'unsubscribed'
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          full_name?: string | null
+          status?: 'active' | 'unsubscribed'
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

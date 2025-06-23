@@ -25,6 +25,8 @@ import Returns from "./pages/Returns";
 import NotFound from "./pages/NotFound";
 import BlogPost from "./pages/BlogPost";
 import Profile from "./pages/Profile";
+import AdminDashboard from "./pages/AdminDashboard";
+import SupabaseTestPage from "./pages/SupabaseTestPage";
 import { useEffect } from 'react';
 
 const queryClient = new QueryClient();
@@ -64,8 +66,10 @@ const App = () => (
                 <Route path="/checkout/success" element={<PaymentSuccess />} />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/shipping" element={<Shipping />} />
                 <Route path="/returns" element={<Returns />} />
+                <Route path="/supabase-test" element={<SupabaseTestPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
