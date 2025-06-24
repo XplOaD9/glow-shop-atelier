@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Auth Issue</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>🔍 Debug Auth Issue</h1>
+    <div id="output"></div>
+
+    <script>
+        const supabaseUrl = 'https://lrtidryoqrlddsuamymt.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxydGlkcnlvcXJsZGRzdWFteW10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1NjgyNDUsImV4cCI6MjA2NTE0NDI0NX0.vSpl0FrPaZBA0sahFd9daC5LYIKlOrN3XTUT8B4mtO0';
+        
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        function log(message, isError = false) {
+            const output = document.getElementById('output');
+            const div = document.createElement('div');
+            div.style.color = isError ? 'red' : 'green';
+            div.style.margin = '5px 0';
+            div.textContent = message;
+            output.appendChild(div);
+            console.log(message);
+        }
+
+        async function debugAuth() {
+            log('🔍 Starting debug process...');
+
+            try {
+                // 1. Test basic connection
+                log('1️⃣ Testing basic Supabase connection...');
+                
+                // 2. Test profiles table access (without authentication)
+                log('2️⃣ Testing profiles table access...');
+                const { data: profilesData, error: profilesError } = await supabase
+                    .from('profiles')
+                    .select('id')
+                    .limit(1);
+
+                if (profilesError) {
+                    log(`❌ Profiles table error: ${profilesError.message}`, true);
+                    log(`Error details: ${JSON.stringify(profilesError)}`, true);
+                } else {
+                    log('✅ Profiles table accessible');
+                    log(`Found ${profilesData?.length || 0} profiles`);
+                }
+
+                // 3. Test newsletter table (care funcționează)
+                log('3️⃣ Testing newsletter table (should work)...');
+                const { data: newsletterData, error: newsletterError } = await supabase
+                    .from('newsletter_subscribers')
+                    .select('id')
+                    .limit(1);
+
+                if (newsletterError) {
+                    log(`❌ Newsletter table error: ${newsletterError.message}`, true);
+                } else {
+                    log('✅ Newsletter table accessible');
+                    log(`Found ${newsletterData?.length || 0} newsletter subscribers`);
+                }
+
+                // 4. Test signup with detailed logging
+                log('4️⃣ Testing signup process...');
+                const testEmail = `debug${Date.now()}@test.com`;
+                const testPassword = 'password123';
+
+                const { data: signupData, error: signupError } = await supabase.auth.signUp({
+                    email: testEmail,
+                    password: testPassword,
+                    options: {
+                        data: {
+                            full_name: 'Debug User',
+                            phone: '0123456789'
+                        }
+                    }
+                });
+
+                if (signupError) {
+                    log(`❌ Signup error: ${signupError.message}`, true);
+                    log(`Error details: ${JSON.stringify(signupError)}`, true);
+                } else {
+                    log('✅ Signup successful!');
+                    log(`User created: ${signupData.user?.email}`);
+                    
+                    if (signupData.user) {
+                        // Check if profile was created by trigger
+                        log('5️⃣ Checking if profile was auto-created...');
+                        const { data: newProfile, error: profileCheckError } = await supabase
+                            .from('profiles')
+                            .select('*')
+                            .eq('id', signupData.user.id)
+                            .single();
+
+                        if (profileCheckError) {
+                            log(`❌ Profile check error: ${profileCheckError.message}`, true);
+                        } else {
+                            log('✅ Profile auto-created by trigger!');
+                            log(`Profile: ${JSON.stringify(newProfile)}`);
+                        }
+                    }
+                }
+
+            } catch (error) {
+                log(`💥 Debug failed: ${error.message}`, true);
+                console.error('Full error:', error);
+            }
+        }
+
+        // Run debug when page loads
+        debugAuth();
+    </script>
+</body>
+</html> 
