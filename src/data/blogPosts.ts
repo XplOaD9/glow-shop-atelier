@@ -53,7 +53,7 @@ Deși progresele sunt impresionante, încă există provocări:
 
 *ErgoCharge continuă să fie în fruntea acestor inovații, dezvoltând soluții care nu doar că urmăresc tendințele, ci le definesc.*
     `,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1586861635167-e5223aba6163?w=800&h=600&fit=crop&crop=center",
     category: "Tehnologie",
     author: "Sarah Johnson",
     date: "2024-01-15",
@@ -130,7 +130,7 @@ Ca utilizator ErgoCharge, poți:
 
 *Împreună, tehnologia și natura pot coexista armonios. ErgoCharge demonstrează că inovația și responsabilitatea ecologică nu sunt doar compatibile - sunt inseparabile.*
     `,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop&crop=center",
     category: "Sustenabilitate",
     author: "Mike Chen",
     date: "2024-01-10",
@@ -238,7 +238,7 @@ ErgoCharge dezvoltă tehnologii care:
 
 *O baterie îngrijită poate dura cu 2-3 ani mai mult. Investiția în încărcătoare de calitate și obiceiuri sănătoase se reflectă în performanța pe termen lung a dispozitivelor tale.*
     `,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=800&h=600&fit=crop",
     category: "Sfaturi",
     author: "Emily Davis",
     date: "2024-01-08",
@@ -409,7 +409,7 @@ Deja în dezvoltare cu:
 
 *ErgoCharge Pro nu este doar un produs - este dovada că designul centrat pe utilizator, combinat cu inovația tehnologică, poate transforma experiența de zi cu zi. Fiecare detaliu, de la prima schiță la produsul final, a fost gândit pentru a face încărcarea nu doar mai rapidă, ci mai inteligentă și mai elegantă.*
     `,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
     category: "Design",
     author: "Sarah Johnson",
     date: "2024-01-05",
@@ -597,7 +597,7 @@ Pentru a crește puterea încărcării, putem:
 - USB Implementers Forum - Power Delivery Specification
 - Journal of Power Sources - Fast Charging Research
     `,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&h=600&fit=crop",
     category: "Tehnologie",
     author: "Mike Chen",
     date: "2024-01-03",
@@ -880,7 +880,7 @@ Layout schema:
 
 *O stație de încărcare bine gândită nu este doar despre alimentarea dispozitivelor - este despre crearea unui ecosistem de productivitate care susține work-from-home success-ul pe termen lung. ErgoCharge oferă toate componentele necesare pentru a-ți construi setup-ul perfect, adaptat stilului tău de lucru și nevoilor specifice.*
     `,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=800&h=600&fit=crop&crop=center",
     category: "Lifestyle",
     author: "Emily Davis",
     date: "2024-01-01",

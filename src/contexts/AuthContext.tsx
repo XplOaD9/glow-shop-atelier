@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (error) {
         console.error('❌ Error loading profile:', error);
         
-        if (error.code === 'PGRST116') {
+        if ('code' in error && error.code === 'PGRST116') {
           console.log('🚨 Profile not found - this may cause logout');
         }
         
@@ -205,7 +205,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (profilesTestError) {
         console.error('❌ Profiles table not accessible:', profilesTestError);
         if (profilesTestError.message.includes('relation "public.profiles" does not exist')) {
-          return { success: false, error: 'Database error saving new user' };
+          return { success: false, error: 'Database error saving new user - Missing profiles table' };
         }
       }
 
@@ -244,19 +244,63 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (data.user) {
+        console.log('✅ User created successfully, creating profile...');
+        
+        // Create profile directly (simple approach like newsletter)
+        const profileData = {
+          id: data.user.id,
+          email: data.user.email!,
+          full_name: userData.fullName,
+          phone: userData.phone || null,
+          role: (email === 'alhakim_sami@yahoo.ro' ? 'admin' : 'user') as 'admin' | 'user'
+        };
+        
+        console.log('📝 Creating profile with data:', profileData);
+        
+        const { error: profileCreateError } = await supabase
+          .from('profiles')
+          .insert(profileData);
+        
+        if (profileCreateError) {
+          console.error('❌ Profile creation failed:', profileCreateError);
+          
+          // Check if it's because table doesn't exist
+          if (profileCreateError.message.includes('does not exist') || 
+              profileCreateError.message.includes('relation')) {
+            return { success: false, error: 'Database nu este configurat! Rulează SQL din CREATE_PROFILES_TABLE.sql' };
+          }
+          
+          // For other errors, show generic message but allow signup
+          if (data.session) {
+            toast({
+              title: "Cont creat cu succes!",
+              description: "Bun venit! Contul poate avea funcționalitate limitată.",
+            });
+          } else {
+            toast({
+              title: "Verifică email-ul!",
+              description: "Am trimis un link de confirmare la adresa ta de email",
+            });
+          }
+          
+          return { success: true };
+        } else {
+          console.log('✅ Profile created successfully');
+        }
+        
         if (data.session) {
           // User is immediately signed in (email confirmation disabled)
           console.log('✅ User created and signed in immediately');
           toast({
-            title: "Account created successfully!",
-            description: "Welcome! Your account has been created.",
+            title: "Cont creat cu succes!",
+            description: "Bun venit! Contul tău a fost creat.",
           });
         } else {
           // Email confirmation required
           console.log('📧 User created, email confirmation required');
           toast({
-            title: "Check your email!",
-            description: "We sent a confirmation link to your email address",
+            title: "Verifică email-ul!",
+            description: "Am trimis un link de confirmare la adresa ta de email",
           });
         }
       }
@@ -268,7 +312,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // Check for specific database errors
       if (errorMessage.includes('profiles') || errorMessage.includes('trigger') || errorMessage.includes('function')) {
-        return { success: false, error: 'Database error saving new user' };
+        return { success: false, error: 'Database error saving new user - Please run database setup' };
       }
       
       return { success: false, error: errorMessage };

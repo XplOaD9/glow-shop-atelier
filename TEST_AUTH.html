@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🧪 Test Auth - ErgoCharge</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        input { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
+        button { padding: 12px 20px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 14px; }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 5px; white-space: pre-wrap; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .loading { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .test-section { margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 5px; }
+        h1 { color: #333; text-align: center; }
+        h3 { color: #666; margin-top: 30px; }
+        .step { margin: 10px 0; padding: 10px; background: #e9ecef; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Authentication - ErgoCharge</h1>
+        
+        <div class="test-section">
+            <h3>📋 Pasul 1: Verifică sistemul</h3>
+            <p>Testează dacă tabela profiles și trigger-urile funcționează:</p>
+            <button onclick="checkSystem()">🔍 Check Auth System</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 Pasul 2: Înregistrare test</h3>
+            <div class="form-group">
+                <label><strong>Email:</strong></label>
+                <input type="email" id="signupEmail" placeholder="test@example.com" value="test@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label><strong>Parolă:</strong></label>
+                <input type="password" id="signupPassword" placeholder="parola123" value="parola123">
+            </div>
+            
+            <div class="form-group">
+                <label><strong>Nume complet:</strong></label>
+                <input type="text" id="signupName" placeholder="Test User" value="Test User">
+            </div>
+            
+            <div class="form-group">
+                <label><strong>Telefon (opțional):</strong></label>
+                <input type="text" id="signupPhone" placeholder="0712345678" value="">
+            </div>
+            
+            <button onclick="testSignup()" id="signupBtn">📧 Test Sign Up</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 Pasul 3: Autentificare test</h3>
+            <div class="form-group">
+                <label><strong>Email:</strong></label>
+                <input type="email" id="signinEmail" placeholder="test@example.com" value="test@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label><strong>Parolă:</strong></label>
+                <input type="password" id="signinPassword" placeholder="parola123" value="parola123">
+            </div>
+            
+            <button onclick="testSignin()" id="signinBtn">🔑 Test Sign In</button>
+            <button onclick="getCurrentUser()">👤 Check Current User</button>
+            <button onclick="testSignout()">🚪 Sign Out</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 Pasul 4: Rezultate</h3>
+            <div id="result">Apasă un buton pentru a începe testarea...</div>
+        </div>
+        
+        <div class="step">
+            <strong>📝 Ce să urmărești:</strong><br>
+            1. "Check Auth System" ar trebui să returneze ✅ pentru toate componentele<br>
+            2. "Test Sign Up" ar trebui să creeze un user și profile automat<br>
+            3. "Test Sign In" ar trebui să autentifice userul<br>
+            4. "Check Current User" ar trebui să afișeze datele userului logat<br>
+            5. Console-ul (F12) va afișa log-uri detaliate pentru debugging
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase with exact same config as React app
+        const SUPABASE_URL = "https://lrtidryoqrlddsuamymt.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxydGlkcnlvcXJsZGRzdWFteW10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1NjgyNDUsImV4cCI6MjA2NTE0NDI0NX0.vSpl0FrPaZBA0sahFd9daC5LYIKlOrN3XTUT8B4mtO0";
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        function showResult(message, type = 'success') {
+            const result = document.getElementById('result');
+            result.innerHTML = message;
+            result.className = `result ${type}`;
+        }
+        
+        function disableButtons(disabled = true) {
+            document.getElementById('signupBtn').disabled = disabled;
+            document.getElementById('signinBtn').disabled = disabled;
+        }
+        
+        async function checkSystem() {
+            showResult('🔍 Checking authentication system...', 'loading');
+            console.log('🔍 Starting auth system check...');
+            
+            try {
+                let report = '✅ AUTHENTICATION SYSTEM CHECK:\n\n';
+                
+                // 1. Check profiles table
+                console.log('📊 Testing profiles table...');
+                const { data: profiles, error: profilesError } = await supabase
+                    .from('profiles')
+                    .select('id, email, role')
+                    .limit(5);
+                
+                if (profilesError) {
+                    report += `❌ Profiles table: ${profilesError.message}\n`;
+                    console.error('❌ Profiles error:', profilesError);
+                } else {
+                    report += `✅ Profiles table: OK (${profiles.length} profiles found)\n`;
+                    console.log('✅ Profiles table works:', profiles);
+                }
+                
+                // 2. Check auth settings
+                console.log('📊 Testing auth functions...');
+                const { data: session } = await supabase.auth.getSession();
+                report += `✅ Auth client: OK (session: ${session.session ? 'active' : 'none'})\n`;
+                
+                // 3. Check if email confirmation is required
+                try {
+                    // This will fail if email confirmation is required
+                    const testResult = await supabase.auth.signUp({
+                        email: 'test-check@example.com',
+                        password: 'test123',
+                        options: { data: { full_name: 'Test Check' } }
+                    });
+                    
+                    if (testResult.data.user && testResult.data.session) {
+                        report += `✅ Email confirmation: DISABLED (immediate login)\n`;
+                        // Clean up test user
+                        await supabase.auth.signOut();
+                    } else if (testResult.data.user && !testResult.data.session) {
+                        report += `⚠️ Email confirmation: ENABLED (requires confirmation)\n`;
+                    }
+                } catch (error) {
+                    report += `❌ Auth test error: ${error.message}\n`;
+                }
+                
+                report += `\n🔧 DIAGNOSIS:\n`;
+                if (profilesError) {
+                    report += `• Run FIX_AUTH_SETUP.sql in Supabase SQL Editor\n`;
+                } else {
+                    report += `• Auth system appears to be working correctly!\n`;
+                    report += `• You can test signup/signin below\n`;
+                }
+                
+                showResult(report, profilesError ? 'error' : 'success');
+                
+            } catch (error) {
+                console.error('💥 System check failed:', error);
+                showResult(`❌ System check failed: ${error.message}
+
+🔧 Please run FIX_AUTH_SETUP.sql in Supabase SQL Editor`, 'error');
+            }
+        }
+        
+        async function testSignup() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const fullName = document.getElementById('signupName').value;
+            const phone = document.getElementById('signupPhone').value;
+            
+            if (!email || !password || !fullName) {
+                showResult('❌ Please fill in email, password and full name', 'error');
+                return;
+            }
+            
+            disableButtons(true);
+            showResult('📧 Testing signup...', 'loading');
+            
+            console.log('🔄 Starting signup test...', { email, fullName, phone });
+            
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            full_name: fullName,
+                            phone: phone || null
+                        }
+                    }
+                });
+                
+                console.log('📊 Signup result:', { data, error });
+                
+                if (error) {
+                    console.error('❌ Signup error:', error);
+                    throw new Error(error.message);
+                }
+                
+                let result = `🎉 SIGNUP SUCCESS!\n\n`;
+                result += `📊 User created:\n`;
+                result += `- ID: ${data.user.id}\n`;
+                result += `- Email: ${data.user.email}\n`;
+                result += `- Created: ${new Date(data.user.created_at).toLocaleString()}\n`;
+                
+                if (data.session) {
+                    result += `\n✅ User is logged in immediately\n`;
+                    result += `Session expires: ${new Date(data.session.expires_at * 1000).toLocaleString()}\n`;
+                    
+                    // Check if profile was created
+                    console.log('🔍 Checking if profile was created...');
+                    const { data: profile, error: profileError } = await supabase
+                        .from('profiles')
+                        .select('*')
+                        .eq('id', data.user.id)
+                        .single();
+                    
+                    if (profile) {
+                        result += `\n✅ Profile created automatically:\n`;
+                        result += `- Name: ${profile.full_name}\n`;
+                        result += `- Role: ${profile.role}\n`;
+                        result += `- Phone: ${profile.phone || 'Not set'}\n`;
+                    } else {
+                        result += `\n⚠️ Profile not found (may take a moment to create)\n`;
+                        if (profileError) {
+                            result += `Profile error: ${profileError.message}\n`;
+                        }
+                    }
+                } else {
+                    result += `\n📧 Email confirmation required\n`;
+                    result += `Check ${email} for confirmation link\n`;
+                }
+                
+                showResult(result, 'success');
+                
+            } catch (error) {
+                console.error('💥 Signup test failed:', error);
+                showResult(`❌ SIGNUP FAILED: ${error.message}
+
+Check the Console (F12) for detailed error logs.`, 'error');
+            } finally {
+                disableButtons(false);
+            }
+        }
+        
+        async function testSignin() {
+            const email = document.getElementById('signinEmail').value;
+            const password = document.getElementById('signinPassword').value;
+            
+            if (!email || !password) {
+                showResult('❌ Please enter email and password', 'error');
+                return;
+            }
+            
+            disableButtons(true);
+            showResult('🔑 Testing signin...', 'loading');
+            
+            console.log('🔄 Starting signin test...', { email });
+            
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password
+                });
+                
+                console.log('📊 Signin result:', { data, error });
+                
+                if (error) {
+                    console.error('❌ Signin error:', error);
+                    throw new Error(error.message);
+                }
+                
+                let result = `🎉 SIGNIN SUCCESS!\n\n`;
+                result += `📊 User authenticated:\n`;
+                result += `- ID: ${data.user.id}\n`;
+                result += `- Email: ${data.user.email}\n`;
+                result += `- Last sign in: ${new Date(data.user.last_sign_in_at).toLocaleString()}\n`;
+                
+                // Load profile
+                console.log('🔍 Loading user profile...');
+                const { data: profile, error: profileError } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', data.user.id)
+                    .single();
+                
+                if (profile) {
+                    result += `\n✅ Profile loaded:\n`;
+                    result += `- Name: ${profile.full_name}\n`;
+                    result += `- Role: ${profile.role}\n`;
+                    result += `- Phone: ${profile.phone || 'Not set'}\n`;
+                } else {
+                    result += `\n⚠️ Profile not found\n`;
+                    if (profileError) {
+                        result += `Profile error: ${profileError.message}\n`;
+                    }
+                }
+                
+                showResult(result, 'success');
+                
+            } catch (error) {
+                console.error('💥 Signin test failed:', error);
+                let errorMsg = error.message;
+                
+                if (errorMsg.includes('Invalid login credentials')) {
+                    errorMsg = 'Email sau parolă incorectă';
+                } else if (errorMsg.includes('Email not confirmed')) {
+                    errorMsg = 'Email-ul nu a fost confirmat încă';
+                }
+                
+                showResult(`❌ SIGNIN FAILED: ${errorMsg}
+
+Check the Console (F12) for detailed error logs.`, 'error');
+            } finally {
+                disableButtons(false);
+            }
+        }
+        
+        async function getCurrentUser() {
+            showResult('👤 Checking current user...', 'loading');
+            
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (!session) {
+                    showResult('❌ No user is currently logged in', 'error');
+                    return;
+                }
+                
+                let result = `👤 CURRENT USER:\n\n`;
+                result += `📊 Session info:\n`;
+                result += `- User ID: ${session.user.id}\n`;
+                result += `- Email: ${session.user.email}\n`;
+                result += `- Expires: ${new Date(session.expires_at * 1000).toLocaleString()}\n`;
+                
+                // Load profile
+                const { data: profile, error: profileError } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', session.user.id)
+                    .single();
+                
+                if (profile) {
+                    result += `\n✅ Profile data:\n`;
+                    result += `- Name: ${profile.full_name}\n`;
+                    result += `- Role: ${profile.role}\n`;
+                    result += `- Phone: ${profile.phone || 'Not set'}\n`;
+                    result += `- Created: ${new Date(profile.created_at).toLocaleString()}\n`;
+                } else {
+                    result += `\n⚠️ No profile found\n`;
+                    if (profileError) {
+                        result += `Error: ${profileError.message}\n`;
+                    }
+                }
+                
+                showResult(result, 'success');
+                
+            } catch (error) {
+                console.error('❌ Current user check failed:', error);
+                showResult(`❌ Error checking current user: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testSignout() {
+            showResult('🚪 Signing out...', 'loading');
+            
+            try {
+                const { error } = await supabase.auth.signOut();
+                
+                if (error) {
+                    throw new Error(error.message);
+                }
+                
+                showResult('✅ Successfully signed out!', 'success');
+                
+            } catch (error) {
+                console.error('❌ Signout failed:', error);
+                showResult(`❌ Signout failed: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html> 
