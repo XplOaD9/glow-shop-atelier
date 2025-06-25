@@ -1,8 +1,9 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "ergocharge-ecommerce",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "ErgoCharge - Premium Wireless Charging Solutions E-commerce Platform",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

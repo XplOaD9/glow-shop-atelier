@@ -1,0 +1,6 @@
+# Pentru a genera favicon.ico cu logo-ul ErgoCharge "EG":
+# 1. Folosește favicon.svg creat
+# 2. Convertește la favicon.ico cu un tool online sau generator
+# 3. Înlocuiește vechiul favicon.ico
+
+# Alternativ, favicon.svg va fi folosit automat de browserele moderne 
