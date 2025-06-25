@@ -15,877 +15,877 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     id: 1,
-    title: "Viitorul încărcării wireless: Ce să așteptăm în 2024",
-    excerpt: "Explorează cele mai recente inovații în tehnologia de încărcare wireless și cum vor schimba modul în care ne alimentăm dispozitivele.",
+    title: "The Future of Wireless Charging: What to Expect in 2024",
+    excerpt: "Explore the latest innovations in wireless charging technology and how they will transform the way we power our devices.",
     content: `
-# Viitorul încărcării wireless: Ce să așteptăm în 2024
+# The Future of Wireless Charging: What to Expect in 2024
 
-Tehnologia de încărcare wireless a parcurs un drum lung de la primele încercări experimentale până la soluțiile comerciale de astăzi. În 2024, ne aflăm la pragul unei revoluții care va transforma complet modul în care ne gândim la alimentarea dispozitivelor noastre electronice.
+Wireless charging technology has come a long way from the first experimental attempts to today's commercial solutions. In 2024, we stand at the threshold of a revolution that will completely transform how we think about powering our electronic devices.
 
-## Progresele tehnologice cheie
+## Key Technological Advances
 
-### 1. Puterea de încărcare sporită
-Noile standarde Qi2 promit viteze de încărcare de până la 50W pentru smartphone-uri și 100W pentru laptop-uri. Aceasta înseamnă că un iPhone poate fi încărcat complet în mai puțin de 30 de minute, wireless.
+### 1. Increased Charging Power
+New Qi2 standards promise charging speeds of up to 50W for smartphones and 100W for laptops. This means an iPhone can be fully charged in less than 30 minutes, wirelessly.
 
-### 2. Eficiența energetică îmbunătățită
-Tehnologiile emergente reduc pierderile de energie la sub 5%, comparativ cu 20-30% în sistemele actuale. Acest lucru înseamnă mai puțină căldură generată și o încărcare mai eficientă.
+### 2. Improved Energy Efficiency
+Emerging technologies reduce energy losses to under 5%, compared to 20-30% in current systems. This means less heat generated and more efficient charging.
 
-### 3. Încărcarea la distanță
-Companiile precum ErgoCharge lucrează la sisteme care pot încărca dispozitive la distanțe de până la 1 metru, eliminând complet nevoia de contact fizic.
+### 3. Distance Charging
+Companies like ErgoCharge are working on systems that can charge devices at distances of up to 1 meter, completely eliminating the need for physical contact.
 
-## Impact asupra utilizatorilor
+## Impact on Users
 
-Aceste îmbunătățiri vor permite:
-- **Încărcare integrată în mobilier**: Mese, scaune și birouri cu încărcare wireless integrată
-- **Zone de încărcare publice**: Cafenele, aeroporturi și spații de lucru cu încărcare ambientală
-- **Vehicule autonome**: Mașini care se încarcă automat în timpul parcării
+These improvements will enable:
+- **Integrated charging in furniture**: Tables, chairs, and desks with built-in wireless charging
+- **Public charging zones**: Cafes, airports, and workspaces with ambient charging
+- **Autonomous vehicles**: Cars that charge automatically while parked
 
-## Provocările care rămân
+## Remaining Challenges
 
-Deși progresele sunt impresionante, încă există provocări:
-- **Costurile de producție** rămân ridicate
-- **Standardizarea** între producători este încă în curs
-- **Compatibilitatea retroactivă** cu dispozitivele existente
+Despite impressive progress, challenges still exist:
+- **Production costs** remain high
+- **Standardization** between manufacturers is still ongoing
+- **Backward compatibility** with existing devices
 
-## Concluzie
+## Conclusion
 
-2024 va fi anul în care încărcarea wireless va trece de la o convenție la o necesitate. Cu investiții masive în cercetare și dezvoltare, ne așteptăm la o adopție în masă a acestor tehnologii în următorii doi ani.
+2024 will be the year when wireless charging transitions from a convenience to a necessity. With massive investments in research and development, we expect mass adoption of these technologies in the next two years.
 
-*ErgoCharge continuă să fie în fruntea acestor inovații, dezvoltând soluții care nu doar că urmăresc tendințele, ci le definesc.*
+*ErgoCharge continues to be at the forefront of these innovations, developing solutions that don't just follow trends, but define them.*
     `,
-    image: "https://images.unsplash.com/photo-1586861635167-e5223aba6163?w=800&h=600&fit=crop&crop=center",
-    category: "Tehnologie",
+    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
+    category: "Technology",
     author: "Sarah Johnson",
     date: "2024-01-15",
     readTime: "5 min",
     featured: true,
-    tags: ["wireless", "tehnologie", "inovație", "viitor"]
+    tags: ["wireless", "technology", "innovation", "future"]
   },
   {
     id: 2,
-    title: "Tehnologia durabilă: Cum ErgoCharge conduce revoluția verde",
-    excerpt: "Descoperă angajamentul nostru față de durabilitate și cum facem un impact pozitiv asupra mediului.",
+    title: "Sustainable Technology: How ErgoCharge Leads the Green Revolution",
+    excerpt: "Discover our commitment to sustainability and how we're making a positive impact on the environment.",
     content: `
-# Tehnologia durabilă: Cum ErgoCharge conduce revoluția verde
+# Sustainable Technology: How ErgoCharge Leads the Green Revolution
 
-În era schimbărilor climatice și a conștientizării ecologice sporite, industria tehnologică are responsabilitatea de a innova nu doar pentru performanță, ci și pentru sustenabilitate. ErgoCharge și-a asumat această responsabilitate, plasând durabilitatea în centrul misiunii sale.
+In the era of climate change and increased ecological awareness, the technology industry has a responsibility to innovate not just for performance, but also for sustainability. ErgoCharge has embraced this responsibility, placing sustainability at the center of its mission.
 
-## Angajamentul nostru pentru mediu
+## Our Environmental Commitment
 
-### Materiale eco-friendly
-- **Plastic reciclat**: 85% din componentele plastice provin din materiale reciclate
-- **Ambalaje biodegradabile**: Toate ambalajele sunt 100% compostabile
-- **Metale recuperate**: Utilizăm metale recuperate din dispozitive electronice vechi
+### Eco-friendly Materials
+- **Recycled plastic**: 85% of plastic components come from recycled materials
+- **Biodegradable packaging**: All packaging is 100% compostable
+- **Recovered metals**: We use metals recovered from old electronic devices
 
-### Producție cu emisii zero
-Fabrica noastră din România funcționează exclusiv pe energie regenerabilă:
-- **Panouri solare**: 60% din energia necesară
-- **Energie eoliană**: 40% din energia necesară
-- **Reducerea deșeurilor**: 95% din deșeurile de producție sunt reciclate
+### Zero-emission Production
+Our factory in Romania operates exclusively on renewable energy:
+- **Solar panels**: 60% of required energy
+- **Wind energy**: 40% of required energy
+- **Waste reduction**: 95% of production waste is recycled
 
-## Impactul măsurabil
+## Measurable Impact
 
-În ultimul an, ErgoCharge a realizat:
-- **Reducere cu 40%** a amprenta de carbon
-- **Plantarea a 10.000 de copaci** pentru fiecare 1000 de produse vândute
-- **Parteneriat cu 15 centre de reciclare** din România
+In the past year, ErgoCharge has achieved:
+- **40% reduction** in carbon footprint
+- **Planted 10,000 trees** for every 1000 products sold
+- **Partnership with 15 recycling centers** in Romania
 
-## Programul "Green Charge"
+## The "Green Charge" Program
 
-Programul nostru de sustenabilitate include:
+Our sustainability program includes:
 
-### 1. Trade-in pentru dispozitive vechi
-Clienții pot returna încărcătoarele vechi pentru o reducere de 20% la produsele noi.
+### 1. Trade-in for Old Devices
+Customers can return old chargers for a 20% discount on new products.
 
-### 2. Reparații gratuite
-Oferim reparații gratuite timp de 3 ani pentru a prelungi durata de viață a produselor.
+### 2. Free Repairs
+We offer free repairs for 3 years to extend product lifespan.
 
-### 3. Educație ecologică
-Organizăm workshop-uri lunar despre consumul responsabil de tehnologie.
+### 3. Ecological Education
+We organize monthly workshops on responsible technology consumption.
 
-## Inovații verzi în dezvoltare
+## Green Innovations in Development
 
-### Încărcătoare solare
-Dezvoltăm o gamă de încărcătoare care utilizează energie solară pentru încărcare în deplasare.
+### Solar Chargers
+We're developing a range of chargers that use solar energy for on-the-go charging.
 
-### Materiale bioderiv
-Cercetăm utilizarea materialelor derivate din alge pentru carcasele produselor.
+### Bio-derived Materials
+We're researching the use of algae-derived materials for product casings.
 
-### Economia circulară
-Implementăm un sistem de leasing pentru încărcătoare, reducând nevoia de cumpărare.
+### Circular Economy
+We're implementing a leasing system for chargers, reducing the need for purchases.
 
-## Viitorul verde
+## The Green Future
 
-Până în 2026, ErgoCharge își propune:
-- **Carbon neutru** în toată lanțul de aprovizionare
-- **100% materiale reciclate** în toate produsele
-- **Extinderea programului** în 10 țări europene
+By 2026, ErgoCharge aims to:
+- **Carbon neutral** throughout the entire supply chain
+- **100% recycled materials** in all products
+- **Program expansion** to 10 European countries
 
-## Cum poți contribui
+## How You Can Contribute
 
-Ca utilizator ErgoCharge, poți:
-- Participa la programul de trade-in
-- Alege ambalaje minimale la comandă
-- Împărtăși experiența ta verde pe social media
+As an ErgoCharge user, you can:
+- Participate in the trade-in program
+- Choose minimal packaging when ordering
+- Share your green experience on social media
 
-*Împreună, tehnologia și natura pot coexista armonios. ErgoCharge demonstrează că inovația și responsabilitatea ecologică nu sunt doar compatibile - sunt inseparabile.*
+*Together, technology and nature can coexist harmoniously. ErgoCharge demonstrates that innovation and ecological responsibility are not just compatible - they are inseparable.*
     `,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop&crop=center",
-    category: "Sustenabilitate",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
+    category: "Sustainability",
     author: "Mike Chen",
     date: "2024-01-10",
     readTime: "7 min",
-    tags: ["sustenabilitate", "ecologie", "responsabilitate", "verde"]
+    tags: ["sustainability", "ecology", "responsibility", "green"]
   },
   {
     id: 3,
-    title: "Maximizarea duratei de viață a bateriei: Sfaturi de expert",
-    excerpt: "Învață cele mai bune practici pentru menținerea sănătății bateriei dispozitivului tău și prelungirea duratei de viață.",
+    title: "Maximizing Battery Life: Expert Tips",
+    excerpt: "Learn the best practices for maintaining your device's battery health and extending its lifespan.",
     content: `
-# Maximizarea duratei de viață a bateriei: Sfaturi de expert
+# Maximizing Battery Life: Expert Tips
 
-Bateria este inima oricărui dispozitiv electronic. O baterie sănătoasă înseamnă performanță optimă și o durată de viață prelungită pentru dispozitivele tale preferate. Iată ghidul complet pentru a maximiza longevitatea bateriilor.
+The battery is the heart of any electronic device. A healthy battery means optimal performance and extended lifespan for your favorite devices. Here's the complete guide to maximizing battery longevity.
 
-## Înțelegerea bateriilor lithium-ion
+## Understanding Lithium-ion Batteries
 
-### Cum funcționează
-Bateriile moderne utilizează tehnologia lithium-ion, care permite:
-- **Încărcare rapidă** fără efectul de memorie
-- **Densitate energetică mare** în volume compacte
-- **Durată de viață** de 500-1000 de cicluri de încărcare
+### How They Work
+Modern batteries use lithium-ion technology, which allows:
+- **Fast charging** without memory effect
+- **High energy density** in compact volumes
+- **Lifespan** of 500-1000 charging cycles
 
-### Factorii de degradare
-- **Temperatura extremă**: Atât căldura, cât și frigul afectează bateria
-- **Încărcarea completă frecventă**: 0-100% uzează bateria mai rapid
-- **Descărcarea completă**: Sub 20% stresează celulele
+### Degradation Factors
+- **Extreme temperature**: Both heat and cold affect the battery
+- **Frequent full charging**: 0-100% wears the battery faster
+- **Complete discharge**: Below 20% stresses the cells
 
-## Sfaturi practice pentru zi cu zi
+## Practical Daily Tips
 
-### 1. Regula 20-80
-**Menține bateria între 20% și 80%** pentru longevitate maximă:
-- Încarcă când ajunge la 20%
-- Deconectează la 80% pentru utilizarea zilnică
-- Încărcare completă doar săptămânal
+### 1. The 20-80 Rule
+**Keep the battery between 20% and 80%** for maximum longevity:
+- Charge when it reaches 20%
+- Disconnect at 80% for daily use
+- Full charge only weekly
 
-### 2. Temperatura optimă
-**Păstrează dispozitivele la 15-25°C**:
-- Evită expunerea la soare directă
-- Nu lăsa în mașină vara
-- Folosește husă cu ventilație
+### 2. Optimal Temperature
+**Keep devices at 15-25°C**:
+- Avoid direct sunlight exposure
+- Don't leave in car during summer
+- Use ventilated cases
 
-### 3. Încărcarea inteligentă
-**Folosește încărcătoare de calitate**:
-- ErgoCharge oferă protecție împotriva supraîncărcării
-- Evită încărcătoarele contrafăcute
-- Utilizează funcția de încărcare lentă noaptea
+### 3. Smart Charging
+**Use quality chargers**:
+- ErgoCharge offers overcharge protection
+- Avoid counterfeit chargers
+- Use slow charging function at night
 
-## Setări de optimizare
+## Set-up Optimization
 
 ### iPhone
-- **Optimized Battery Charging**: Activează în Settings > Battery > Battery Health
-- **Low Power Mode**: Folosește când bateria e sub 20%
-- **Background App Refresh**: Dezactivează pentru aplicații neesențiale
+- **Optimized Battery Charging**: Active in Settings > Battery > Battery Health
+- **Low Power Mode**: Use when battery is under 20%
+- **Background App Refresh**: Disable for non-essential apps
 
 ### Android
-- **Adaptive Battery**: Activează în Settings > Battery
-- **Battery Optimization**: Configurează pentru aplicații individuale
-- **Dark Mode**: Reduce consumul pe ecrane OLED
+- **Adaptive Battery**: Active in Settings > Battery
+- **Battery Optimization**: Configure for individual apps
+- **Dark Mode**: Reduce consumption on OLED screens
 
 ### Laptop
-- **Power Profile**: Folosește "Balanced" pentru utilizare normală
-- **Sleep vs Hibernate**: Hibernate pentru pauze lungi
-- **Display Brightness**: Reduce la 50-70%
+- **Power Profile**: Use "Balanced" for normal use
+- **Sleep vs Hibernate**: Hibernate for long breaks
+- **Display Brightness**: Reduce to 50-70%
 
-## Mituri despre baterii
+## Battery Myths
 
-### ❌ "Trebuie să descarc complet bateria"
-**Fals**: Bateriile lithium-ion preferă încărcări parțiale frecvente.
+### ❌ "You need to completely discharge the battery"
+**False**: Lithium-ion batteries prefer frequent partial charging.
 
-### ❌ "Încărcarea peste noapte dăunează"
-**Fals**: Încărcătoarele moderne opresc alimentarea la 100%.
+### ❌ "Charging overnight damages"
+**False**: Modern chargers stop feeding at 100%.
 
-### ❌ "Aplicațiile de optimizare funcționează"
-**Fals**: Majoritatea sunt placebo; sistemul de operare gestionează deja eficient.
+### ❌ "Optimization apps work"
+**False**: Most are placebos; the operating system manages efficiently.
 
-## Semnale de înlocuire
+## Replacement Signals
 
-Înlocuiește bateria când:
-- **Capacitatea scade sub 80%** din original
-- **Se încălzește excesiv** în timpul încărcării
-- **Se umflă sau deformează** (OPREȘTE utilizarea imediat)
-- **Nu mai ține încărcarea** mai mult de câteva ore
+Replace the battery when:
+- **Capacity drops below 80%** from original
+- **Gets too hot during charging**
+- **Swells or distorts** (STOP USE IMMEDIATELY)
+- **Can't hold charge** for more than a few hours
 
-## Tehnologii viitoare
+## Future Technologies
 
-### Baterii solid-state
-- **Capacitate dublă** față de lithium-ion
-- **Încărcare în 5 minute** la 80%
-- **Durată de viață** de 10+ ani
+### Solid-state batteries
+- **Double capacity** compared to lithium-ion
+- **Charge in 5 minutes** at 80%
+- **Lifespan** of 10+ years
 
-### Încărcare wireless optimizată
-ErgoCharge dezvoltă tehnologii care:
-- Monitorizează temperatura în timp real
-- Ajustează viteza de încărcare automat
-- Prelungesc durata de viață cu 30%
+### Optimized wireless charging
+ErgoCharge develops technologies that:
+- Monitor temperature in real time
+- Adjust charging speed automatically
+- Extend lifespan by 30%
 
-## Checklist săptămânal
+## Weekly Checklist
 
-✅ Verifică aplicațiile care consumă mult
-✅ Curăță cache-ul aplicațiilor
-✅ Actualizează software-ul
-✅ Verifică temperatura dispozitivului
-✅ Calibrează bateria (descărcare-încărcare completă)
+✅ Check apps consuming much
+✅ Clean app cache
+✅ Update software
+✅ Check device temperature
+✅ Calibrate battery (full discharge-charge)
 
-*O baterie îngrijită poate dura cu 2-3 ani mai mult. Investiția în încărcătoare de calitate și obiceiuri sănătoase se reflectă în performanța pe termen lung a dispozitivelor tale.*
+*A well-cared-for battery can last 2-3 years longer. The investment in quality chargers and healthy habits reflects in the long-term performance of your devices.*
     `,
-    image: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=800&h=600&fit=crop",
-    category: "Sfaturi",
+    image: "https://images.unsplash.com/photo-1609081219090-a6d81d3085bf?w=800&h=600&fit=crop",
+    category: "Tips",
     author: "Emily Davis",
     date: "2024-01-08",
     readTime: "4 min",
-    tags: ["baterie", "sfaturi", "optimizare", "longevitate"]
+    tags: ["battery", "tips", "optimization", "longevity"]
   },
   {
     id: 4,
-    title: "În spatele designului: Crearea ErgoCharge Pro",
-    excerpt: "Mergi în culisele procesului de design care a dat naștere produsului nostru flagship.",
+    title: "Behind the Design: Creating ErgoCharge Pro",
+    excerpt: "Go behind the scenes of the design process that gave birth to our flagship product.",
     content: `
-# În spatele designului: Crearea ErgoCharge Pro
+# Behind the Design: Creating ErgoCharge Pro
 
-Fiecare produs ErgoCharge începe cu o întrebare simplă: "Cum putem face încărcarea mai bună?" Pentru ErgoCharge Pro, această întrebare a devenit o călătorie de 18 luni prin cercetare, design și inovație.
+Every ErgoCharge product starts with a simple question: "How can we make charging better?" For ErgoCharge Pro, this question became a 18-month journey through research, design, and innovation.
 
-## Geneza unei idei
+## Origin of an Idea
 
-### Problema identificată
-Cercetarea noastră din 2023 a revelat că 73% dintre utilizatori:
-- **Își uită încărcătoarele** acasă cel puțin o dată pe săptămână
-- **Au multiple încărcătoare** pentru dispozitive diferite
-- **Sunt frustrați** de vitezele lente de încărcare în deplasare
+### Identified Problem
+Our 2023 research revealed that 73% of users:
+- **Forget their chargers** at home at least once a week
+- **Have multiple chargers** for different devices
+- **Are frustrated** by slow charging speeds in motion
 
-### Viziunea
-Să creăm primul încărcător universal care să fie:
-- **Compact** cât un portofel
-- **Rapid** ca încărcătoarele de casă
-- **Inteligent** să se adapteze la orice dispozitiv
+### Vision
+To create the first universal charger that is:
+- **Compact** as a wallet
+- **Rapid** as a home charger
+- **Intelligent** to adapt to any device
 
-## Faza de cercetare
+## Research Phase
 
-### Studiul utilizatorilor
-Am intervievat 500 de persoane din România, Germania și Franța:
+### User Study
+We interviewed 500 people in Romania, Germany, and France:
 
-#### Profilul utilizatorului tip
-- **Vârsta**: 25-45 ani
-- **Ocupația**: Professional în tech/business
-- **Dispozitive**: 3-5 gadget-uri zilnic
-- **Frustrări**: Cabluri multiple, viteze lente
+#### User Profile
+- **Age**: 25-45 years
+- **Occupation**: Professional in tech/business
+- **Devices**: 3-5 gadgets daily
+- **Frustrations**: Multiple cables, slow charging
 
-### Analiza competiției
-Am testat 47 de încărcătoare existente pentru:
-- **Viteza de încărcare**
-- **Compatibilitatea**
-- **Durabilitatea**
-- **Design și ergonomie**
+### Competitive Analysis
+We tested 47 existing chargers for:
+- **Charging Speed**
+- **Compatibility**
+- **Durability**
+- **Design and ergonomics**
 
-#### Găsit: Nimeni nu oferea totul într-un singur produs
+#### Find: No one offered everything in one product
 
-## Procesul de design
+## Design Process
 
-### Schițele inițiale
-Primul brainstorming a generat 23 de concepte diferite:
-- **Format credit card** (prea subțire pentru componente)
-- **Design modular** (prea complex pentru utilizare)
-- **Format cilindric** (dificil de transportat)
+### Initial Sketches
+The initial brainstorming generated 23 different concepts:
+- **Credit Card Format** (too thin for components)
+- **Modular Design** (too complex for use)
+- **Cylindrical Format** (difficult to transport)
 
-### Conceptul câștigător: "Origami Tech"
-Inspirat de arta japoneză a origami:
-- **Pliabil** pentru transport compact
-- **Extensibil** pentru utilizare confortabilă
-- **Elegant** prin simplitate
+### Winning Concept: "Origami Tech"
+Inspired by Japanese origami art:
+- **Foldable** for compact transport
+- **Expandable** for comfortable use
+- **Elegant** by simplicity
 
-### Prototiparea
-Am creat 12 prototipuri în 6 luni:
+### Prototyping
+We created 12 prototypes in 6 months:
 
-#### Prototipul 1-3: Testarea conceptului
-- Carton și componente de bază
-- Validarea dimensiunilor
-- Testarea ergonomiei
+#### Prototype 1-3: Concept Testing
+- Cardboard and basic components
+- Dimension Validation
+- Ergonomic Testing
 
-#### Prototipul 4-8: Funcționalitatea
-- Circuite reale integrate
-- Testarea vitezelor de încărcare
-- Optimizarea disipării căldurii
+#### Prototype 4-8: Functionality
+- Real integrated circuits
+- Charging Speed Testing
+- Heat Dissipation Optimization
 
-#### Prototipul 9-12: Finalizarea
-- Materiale finale
-- Testarea durabilității
-- Validarea UX-ului
+#### Prototype 9-12: Finalization
+- Final Materials
+- Durability Testing
+- UX Validation
 
-## Inovațiile tehnice
+## Technical Innovations
 
 ### 1. GaN Technology
-**Gallium Nitride** permite:
-- **50% mai mic** decât încărcătoarele tradiționale
-- **30% mai eficient** energetic
-- **Căldură minimă** generată
+**Gallium Nitride** allows:
+- **50% smaller** than traditional chargers
+- **30% more efficient** energy
+- **Minimal Heat** generated
 
 ### 2. AI Charging
-Procesorul integrat:
-- **Detectează tipul** de dispozitiv automat
-- **Optimizează viteza** pentru longevitatea bateriei
-- **Învață obiceiurile** utilizatorului
+Integrated Processor:
+- **Detects Device Type** automatically
+- **Optimizes Speed** for battery longevity
+- **Learns User Habits**
 
-### 3. Design modular
-- **Cabluri detașabile** pentru flexibilitate
-- **Adaptor magnetic** pentru fixare
-- **LED ring** pentru feedback vizual
+### 3. Modular Design
+- **Detachable Cables** for flexibility
+- **Magnetic Adapters** for attachment
+- **LED Ring** for visual feedback
 
-## Testarea exhaustivă
+## Comprehensive Testing
 
-### Testele de durabilitate
-- **10.000 de pliări** fără uzură
-- **Test de cădere** de la 2 metri
-- **Rezistența la apă** IP67
+### Durability Tests
+- **10,000 Folds** without wear
+- **Drop Test** from 2 meters
+- **Water Resistance** IP67
 
-### Testele de performanță
-- **Încărcare iPhone 15**: 0-50% în 23 minute
-- **Încărcare MacBook**: 0-80% în 45 minute
-- **Eficiența**: 94% (industry standard: 85%)
+### Performance Tests
+- **iPhone 15 Charging**: 0-50% in 23 minutes
+- **MacBook Charging**: 0-80% in 45 minutes
+- **Efficiency**: 94% (industry standard: 85%)
 
-### Testele utilizatorilor
-100 de beta testeri, 30 de zile:
-- **97% satisfacție** generală
-- **100% recomandă** produsul
-- **Feedback**: "Revoluționar pentru călătorii"
+### User Tests
+100 beta testers, 30 days:
+- **97% Satisfaction** overall
+- **100% Recommend** the product
+- **Feedback**: "Revolutionary for travelers"
 
-## Designul final
+## Final Design
 
-### Specificații
-- **Dimensiuni**: 85mm x 55mm x 12mm (pliat)
-- **Greutate**: 180g
-- **Putere**: 65W total (45W USB-C + 20W wireless)
-- **Culori**: Midnight Black, Arctic White, Rose Gold
+### Specifications
+- **Dimensions**: 85mm x 55mm x 12mm (folded)
+- **Weight**: 180g
+- **Power**: 65W total (45W USB-C + 20W wireless)
+- **Colors**: Midnight Black, Arctic White, Rose Gold
 
-### Materiale premium
-- **Aluminiu anodizat** pentru carcasă
-- **Kevlar** pentru cabluri
-- **Sticlă temperată** pentru zona wireless
+### Premium Materials
+- **Anodized Aluminum** for case
+- **Kevlar** for cables
+- **Tempered Glass** for wireless area
 
-## Impactul comercial
+## Commercial Impact
 
-### Lansarea
-- **Pre-comenzi**: 5.000 în prima săptămână
-- **Rating**: 4.9/5 stele pe toate platformele
-- **Media coverage**: 50+ articole internaționale
+### Launch
+- **Pre-orders**: 5,000 in first week
+- **Rating**: 4.9/5 stars on all platforms
+- **Media Coverage**: 50+ international articles
 
-### Feedback-ul industriei
+### Industry Feedback
 - **CES 2024**: Innovation Award Winner
 - **Tech Crunch**: "Game changer for mobile charging"
 - **Wired**: "The future of portable power"
 
-## Lecțiile învățate
+## Lessons Learned
 
-### Ce a funcționat
-✅ **Cercetarea utilizatorilor** profundă de la început
-✅ **Prototiparea rapidă** cu feedback constant
-✅ **Colaborarea cross-funcțională** design-tech-marketing
+### What Worked
+✅ **Deep User Research** from the start
+✅ **Rapid Prototyping** with constant feedback
+✅ **Cross-functional Collaboration** design-tech-marketing
 
-### Ce am îmbunătățit
-🔄 **Timeline-ul**: Prima estimare a fost prea optimistă
-🔄 **Testarea**: Am adăugat mai multe cicluri de validare
-🔄 **Comunicarea**: Weekly reviews pentru alignment
+### What We Improved
+🔄 **Timeline**: Initial estimate was overly optimistic
+🔄 **Testing**: Added more validation cycles
+🔄 **Communication**: Weekly reviews for alignment
 
-## Ce urmează
+## What's Next
 
 ### ErgoCharge Pro 2.0
-Deja în dezvoltare cu:
-- **Încărcare solară** integrată
-- **Display OLED** pentru status
-- **Conectivitate IoT** pentru monitorizare
+Already in development with:
+- **Integrated Solar Charging**
+- **OLED Display** for status
+- **IoT Connectivity** for monitoring
 
-### Ecosistemul ErgoCharge
-- **Dock station** pentru birou
-- **Car charger** cu aceleași tehnologii
-- **Power bank** cu designul origami
+### ErgoCharge Ecosystem
+- **Dock Station** for office
+- **Car Charger** with same technologies
+- **Power Bank** with origami design
 
-*ErgoCharge Pro nu este doar un produs - este dovada că designul centrat pe utilizator, combinat cu inovația tehnologică, poate transforma experiența de zi cu zi. Fiecare detaliu, de la prima schiță la produsul final, a fost gândit pentru a face încărcarea nu doar mai rapidă, ci mai inteligentă și mai elegantă.*
+*ErgoCharge Pro is not just a product - it's proof that user-centered design, combined with technological innovation, can transform everyday experience. Every detail, from initial sketch to final product, was thought for not just faster charging, but smarter and more elegant.*
     `,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
+    image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&h=600&fit=crop",
     category: "Design",
     author: "Sarah Johnson",
     date: "2024-01-05",
     readTime: "6 min",
-    tags: ["design", "produs", "inovație", "proces"]
+    tags: ["design", "product", "innovation", "process"]
   },
   {
     id: 5,
-    title: "Știința încărcării rapide: Cum funcționează",
-    excerpt: "Înțelege tehnologia din spatele încărcării rapide și de ce revoluționează modul în care ne folosim dispozitivele.",
+    title: "Science of Fast Charging: How It Works",
+    excerpt: "Understand the technology behind fast charging and why it revolutionizes how we use our devices.",
     content: `
-# Știința încărcării rapide: Cum funcționează
+# Science of Fast Charging: How It Works
 
-Încărcarea rapidă pare magie - de la 0% la 50% în doar 30 de minute. Dar în spatele acestei "magii" se ascunde o știință complexă care implică fizică, chimie și inginerie de vârf. Să explorăm împreună această fascinantă tehnologie.
+Fast charging seems like magic - from 0% to 50% in just 30 minutes. But behind this "magic" lies a complex science involving physics, chemistry, and high-level engineering. Let's explore this fascinating technology together.
 
-## Fundamentele fizice
+## Physical Fundamentals
 
-### Legea lui Ohm în practică
-**P = V × I** (Puterea = Tensiunea × Intensitatea)
+### Ohm's Law in Practice
+**P = V × I** (Power = Voltage × Current)
 
-Pentru a crește puterea încărcării, putem:
-- **Crește tensiunea** (V) - standard de la 5V la 9V, 12V sau chiar 20V
-- **Crește intensitatea** (I) - de la 1A la 3A, 5A sau mai mult
-- **Optimizăm ambele** pentru eficiență maximă
+To increase charging power, we can:
+- **Increase Voltage** (V) - standard from 5V to 9V, 12V, or even 20V
+- **Increase Current** (I) - from 1A to 3A, 5A, or more
+- **Optimize Both** for maximum efficiency
 
-### Limitările fizice
-- **Căldura**: Rezistența créé căldură (P = I²R)
-- **Siguranța**: Tensiuni prea mari sunt periculoase
-- **Limitările bateriei**: Lithium-ion-ul are limite de acceptare
+### Physical Limitations
+- **Heat**: Resistance heating (P = I²R)
+- **Safety**: Too high voltages are dangerous
+- **Battery Limitations**: Lithium-ion has acceptance limits
 
-## Tehnologiile moderne
+## Modern Technologies
 
 ### Quick Charge (Qualcomm)
-**Evoluția standardelor**:
+**Evolution of Standards**:
 - **QC 1.0**: 5V/2A = 10W
-- **QC 2.0**: 5V-12V variabilă = 18W
-- **QC 3.0**: 3.6V-20V continuu = 18W
-- **QC 4.0**: USB PD compatibil = 27W
-- **QC 5.0**: 100W+ pentru laptop-uri
+- **QC 2.0**: 5V-12V variable = 18W
+- **QC 3.0**: 3.6V-20V continuous = 18W
+- **QC 4.0**: USB PD compatible = 27W
+- **QC 5.0**: 100W+ for laptops
 
 ### Power Delivery (USB-IF)
-**Standardul universal**:
-- **Negociere dinamică**: Dispozitivul cere puterea necesară
-- **Profiluri multiple**: 5V-20V cu puteri de la 15W la 100W
-- **Compatibilitate universală**: Funcționează între branduri
+**Universal Standard**:
+- **Dynamic Negotiation**: Device demands required power
+- **Multiple Profiles**: 5V-20V with powers from 15W to 100W
+- **Universal Compatibility**: Works between brands
 
-### Tehnologii proprietare
+### Proprietary Technologies
 
 #### Apple Lightning
-- **Optimizată pentru iOS**: Comunicare directă cu sistemul
-- **Limitare la 20W**: Pentru protejarea bateriei
-- **MagSafe wireless**: 15W magnetic optimizat
+- **Optimized for iOS**: Direct communication with system
+- **Limit to 20W**: For battery protection
+- **MagSafe Wireless**: 15W magnetic optimized
 
 #### Samsung Adaptive Fast Charging
-- **45W pentru flagship-uri**: Note și Galaxy S series
-- **Cooling inteligent**: Reduce viteza dacă se încălzește
-- **Optimizare software**: Colaborare chip-baterie-încărcător
+- **45W for flagships**: Note and Galaxy S series
+- **Cooling Intelligent**: Slows speed if gets hot
+- **Software Optimization**: Chip-battery-charger collaboration
 
-## Chimia bateriilor
+## Battery Chemistry
 
-### Cum acceptă bateria încărcarea rapidă
+### How Batteries Accept Fast Charging
 
-#### Fazele de încărcare
-1. **Faza rapidă** (0-80%): Curent constant, tensiune crescândă
-2. **Faza de absorbție** (80-95%): Tensiune constantă, curent descrescând
-3. **Faza de menținere** (95-100%): Curent minimal pentru saturație
+#### Charging Phases
+1. **Fast Phase** (0-80%): Constant current, rising voltage
+2. **Absorption Phase** (80-95%): Constant voltage, falling current
+3. **Maintenance Phase** (95-100%): Minimal current for saturation
 
-#### De ce se încetinește după 80%?
-- **Protecția bateriei**: Evită supraîncărcarea
-- **Echilibrarea celulelor**: Toate celulele ajung la același nivel
-- **Controlul căldurii**: Reduce stresul termic
+#### Why Does It Slow Down After 80%?
+- **Battery Protection**: Prevents overcharging
+- **Cell Balancing**: All cells reach the same level
+- **Heat Control**: Reduces thermal stress
 
-### Inovațiile în chimia bateriilor
+### Battery Chemistry Innovations
 
-#### Bateriile cu grafen
-- **Conductivitate superioară**: 10x mai bună decât lithium-ion
-- **Încărcare în 5 minute**: Potențial pentru încărcare completă
-- **Durată de viață**: 5000+ cicluri vs 500-1000 actuale
+#### Graphene Batteries
+- **Superconductivity**: 10x better than lithium-ion
+- **Charging in 5 Minutes**: Potential for full charge
+- **Lifespan**: 5000+ cycles vs 500-1000 actual
 
-#### Silicon nanowires
-- **Capacitate crescută**: 10x mai multă energie stocată
-- **Compatibilitate**: Cu infrastructura existentă
-- **Provocarea**: Expansiunea volumului în timpul încărcării
+#### Silicon Nanowires
+- **Increased Capacity**: 10x more stored energy
+- **Compatibility**: With existing infrastructure
+- **Challenge**: Volume expansion during charging
 
-## Managementul termic
+## Thermal Management
 
-### Problema căldurii
-**De ce se încălzesc bateriile?**:
-- **Rezistența internă**: I²R heating effect
-- **Reacțiile chimice**: Exoterme în celule
-- **Încărcarea rapidă**: Mai mult curent = mai multă căldură
+### Heat Problem
+**Why Do Batteries Get Hot?**:
+- **Internal Resistance**: I²R heating effect
+- **Chemical Reactions**: Exothermic in cells
+- **Fast Charging**: More current = More heat
 
-### Soluțiile inginerești
+### Engineering Solutions
 
-#### Cooling activ
-- **Ventilatoare**: În încărcătoarele de masă puternice
-- **Liquid cooling**: Pentru stații de încărcare rapide
-- **Thermoelectric coolers**: Peltier elements pentru cooling precis
+#### Active Cooling
+- **Fans**: In powerful desktop chargers
+- **Liquid Cooling**: For rapid charging stations
+- **Thermoelectric Coolers**: Peltier elements for precise cooling
 
-#### Design pasiv
-- **Heat sinks**: Suprafețe metalice mărite
-- **Thermal pads**: Transfer de căldură între componente
-- **Ventilație**: Design cu flux de aer natural
+#### Passive Design
+- **Heat Sinks**: Increased metal surfaces
+- **Thermal Pads**: Heat transfer between components
+- **Ventilation**: Natural air flow design
 
-#### Software thermal management
-- **Monitorizare continuă**: Senzori de temperatură multipli
-- **Throttling dinamic**: Reducerea vitezei când e necesar
-- **Predicție**: AI pentru anticiparea încălzirii
+#### Software Thermal Management
+- **Continuous Monitoring**: Multi-sensor temperature
+- **Dynamic Throttling**: Speed reduction when needed
+- **Prediction**: AI for temperature anticipation
 
-## Siguranța încărcării rapide
+## Fast Charging Safety
 
-### Protecțiile integrate
+### Integrated Protections
 
-#### Nivelul hardware
-- **Over-voltage protection**: Oprește la tensiuni periculoase
-- **Over-current protection**: Limitează curentul maxim
-- **Temperature monitoring**: Senzori multipli de supraveghere
+#### Hardware Level
+- **Over-voltage Protection**: Turns off at dangerous voltages
+- **Over-current Protection**: Limits maximum current
+- **Temperature Monitoring**: Multi-sensor monitoring
 
-#### Nivelul software
-- **Algoritmi adaptivi**: Învață comportamentul bateriei
-- **Comunicare bi-direcțională**: Încărcător ↔ Dispozitiv
-- **Updates OTA**: Îmbunătățiri prin software
+#### Software Level
+- **Adaptive Algorithms**: Learns battery behavior
+- **Bi-directional Communication**: Charger ↔ Device
+- **OTA Updates**: Improvements through software
 
-### Standardele de siguranță
-- **UL certification**: Testare independentă în SUA
-- **CE marking**: Conformitate europeană
-- **FCC approval**: Compatibilitate electromagnetică
+### Safety Standards
+- **UL Certification**: Independent test in USA
+- **CE Marking**: European Conformity
+- **FCC Approval**: Electromagnetic Compatibility
 
-## Viitorul încărcării rapide
+## Future of Fast Charging
 
-### Tehnologii emergente
+### Emerging Technologies
 
-#### Wireless high-power
-- **Qi2 standard**: Până la 50W wireless
-- **Magnetic resonance**: Încărcare la distanță de cm
-- **Beamforming**: Wireless încărcare direcțională
+#### Wireless High-power
+- **Qi2 Standard**: Up to 50W wireless
+- **Magnetic Resonance**: Wireless charging at cm distance
+- **Beamforming**: Wireless directional charging
 
 #### Solid-state batteries
-- **Densitate energetică**: Dublă față de Li-ion
-- **Siguranță**: Fără risc de explozie sau foc
-- **Longevitate**: 10+ ani de utilizare
+- **Energy Density**: Double compared to Li-ion
+- **Safety**: No explosion or fire risk
+- **Longevity**: 10+ years of use
 
-#### Supercapacitors hybrid
-- **Încărcare instantanee**: Secunde pentru 80%
-- **Durabilitate**: Milioane de cicluri
-- **Putere ridicată**: Ideali pentru vârfuri de consum
+#### Supercapacitors Hybrid
+- **Instant Charging**: Seconds for 80%
+- **Durability**: Million cycles
+- **High Power**: Ideal for peak consumption
 
-### Încărcarea 1000W+
+### 1000W+ Charging
 
-#### Provocările
-- **Infrastructure**: Rețele electrice adaptate
-- **Căldura**: Sisteme de răcire avansate
-- **Costurile**: Componente premium scumpe
+#### Challenges
+- **Infrastructure**: Adapted electrical networks
+- **Heat**: Advanced cooling systems
+- **Costs**: Premium component expensive
 
-#### Beneficiile
-- **Laptop-uri**: Încărcare completă în 5 minute
-- **Vehicule electrice**: Range anxiety eliminated
-- **IoT devices**: Power banking pentru zile întregi
+#### Benefits
+- **Laptops**: Full charge in 5 minutes
+- **Electric Vehicles**: Range anxiety eliminated
+- **IoT Devices**: Power banking for full days
 
-## Impactul asupra utilizatorilor
+## User Impact
 
-### Schimbarea comportamentului
-- **Anxietatea bateriei**: Diminuată semnificativ
-- **Planning-ul zilnic**: Mai puțin timp dedicat încărcării
-- **Mobilitatea**: Libertate sporită de mutare
+### Behavior Change
+- **Battery Anxiety**: Significantly reduced
+- **Daily Planning**: Less time dedicated to charging
+- **Mobility**: Increased freedom of movement
 
-### Noi oportunități
-- **Work patterns**: Remote work mai flexibil
-- **Entertainment**: Gaming mobile extins
-- **Photography**: Sesiuni foto mai lungi
+### New Opportunities
+- **Work Patterns**: Remote work more flexible
+- **Entertainment**: Extended mobile gaming
+- **Photography**: Longer photo sessions
 
-## Concluzie tehnică
+## Technical Conclusion
 
-Încărcarea rapidă reprezintă confluența mai multor domenii științifice:
-- **Fizica**: Pentru înțelegerea transferului de energie
-- **Chimia**: Pentru optimizarea bateriilor
-- **Ingineria**: Pentru implementarea sigură
-- **Software**: Pentru controlul inteligent
+Fast charging represents the convergence of multiple scientific fields:
+- **Physics**: For understanding energy transfer
+- **Chemistry**: For battery optimization
+- **Engineering**: For safe implementation
+- **Software**: For intelligent control
 
-*ErgoCharge continuă să inoveze în toate aceste domenii, aducând știința de vârf în produse accesibile tuturor. Fiecare încărcător ErgoCharge încorporează ani de cercetare pentru a oferi cea mai rapidă și sigură încărcare posibilă.*
+*ErgoCharge continues to innovate in all these fields, bringing high-level science into accessible products. Every ErgoCharge charger incorporates years of research to offer the fastest and safest possible charging.*
 
-### Referințe tehnice
+### Technical References
 - IEEE Standards for Power Electronics
 - Battery University - Charging Lithium-ion
 - USB Implementers Forum - Power Delivery Specification
 - Journal of Power Sources - Fast Charging Research
     `,
     image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&h=600&fit=crop",
-    category: "Tehnologie",
+    category: "Technology",
     author: "Mike Chen",
     date: "2024-01-03",
     readTime: "8 min",
-    tags: ["tehnologie", "știință", "încărcare", "fizică"]
+    tags: ["technology", "science", "charging", "physics"]
   },
   {
     id: 6,
-    title: "Munca de acasă: Configurarea stației de încărcare perfecte",
-    excerpt: "Creează un spațiu de lucru eficient și organizat cu configurația ideală de încărcare pentru toate dispozitivele.",
+    title: "Home Office Work: Configuring the Perfect Charging Station",
+    excerpt: "Create an efficient and organized workspace with the ideal charging configuration for all devices.",
     content: `
-# Munca de acasă: Configurarea stației de încărcare perfecte
+# Home Office Work: Configuring the Perfect Charging Station
 
-Munca de acasă a devenit norma pentru milioane de oameni, transformând living-urile și dormitoarele în birouri improvizate. Una dintre cele mai importante, dar adesea neglijate aspecte ale unui workspace eficient este organizarea încărcării dispozitivelor. Iată ghidul complet pentru o stație de încărcare perfectă.
+Home office has become the norm for millions of people, transforming living spaces and bedrooms into makeshift offices. One of the most important, but often overlooked aspects of an efficient workspace is device charging organization. Here's the complete guide for a perfect charging station.
 
-## Analiza nevoilor tale
+## Analyzing Your Needs
 
-### Inventarul dispozitivelor
-**Fă o listă cu toate gadget-urile folosite zilnic**:
+### Inventory of Devices
+**Make a list of all gadgets used daily**:
 
-#### Categoria 1: Esențiale pentru muncă
-- **Laptop/MacBook**: 45-100W necesari
-- **Monitor extern**: 65W dacă e alimentat prin USB-C
-- **Smartphone de serviciu**: 18-25W
-- **Tablet pentru notițe**: 18-30W
+#### Category 1: Essential for Work
+- **Laptop/MacBook**: 45-100W required
+- **External Monitor**: 65W if powered by USB-C
+- **Service Smartphone**: 18-25W
+- **Notebook for Notes**: 18-30W
 
-#### Categoria 2: Accesorii de productivitate
-- **Mouse wireless**: 5W charging dock
-- **Keyboard wireless**: 5W
+#### Category 2: Productivity Accessories
+- **Wireless Mouse**: 5W charging dock
+- **Wireless Keyboard**: 5W
 - **Headphones/AirPods**: 5-15W
 - **Smartwatch**: 5W
 
-#### Categoria 3: Personal
-- **Smartphone personal**: 18-25W
+#### Category 3: Personal
+- **Personal Smartphone**: 18-25W
 - **E-reader**: 10W
-- **Power bank**: 18W input
-- **Camera pentru video calls**: 10W
+- **Power Bank**: 18W input
+- **Video Call Camera**: 10W
 
-### Calculul puterii totale
-**Exemplu pentru setup complet**:
+### Calculating Total Power
+**Example for complete setup**:
 - Laptop: 65W
 - Monitor: 65W  
-- 2 Smartphone-uri: 50W
+- 2 Smartphones: 50W
 - Tablet: 30W
-- Accesorii: 30W
+- Accessories: 30W
 - **Total**: ~240W
 
-*Regula: Adaugă 20% pentru siguranță = 290W*
+*Rule: Add 20% for safety = 290W*
 
-## Tipuri de stații de încărcare
+## Types of Charging Stations
 
 ### 1. Desktop Charging Hub
-**Pentru biroul tradițional**
+**For Traditional Desk**
 
-#### Avantaje
-✅ **Centralizare**: Toate cablurile într-un loc
-✅ **Aesthetics**: Aspect curat și organizat
-✅ **Management cabluri**: Canale integrate
-✅ **Multiple protocoale**: USB-A, USB-C, Wireless
+#### Advantages
+✅ **Centralization**: All cables in one place
+✅ **Aesthetics**: Clean and organized look
+✅ **Cable Management**: Integrated channels
+✅ **Multiple Protocols**: USB-A, USB-C, Wireless
 
-#### Recomandări ErgoCharge
-- **ErgoHub Pro**: 8 porturi, 200W total
-- **ErgoStation Wireless**: Hub + 3 zone wireless
-- **ErgoDesk Integrated**: Built-in în suprafața mesei
+#### ErgoCharge Recommendations
+- **ErgoHub Pro**: 8 ports, 200W total
+- **ErgoStation Wireless**: Hub + 3 wireless zones
+- **ErgoDesk Integrated**: Built-in in desk surface
 
 ### 2. Wall-mounted Solution
-**Pentru spații mici**
+**For Small Spaces**
 
-#### Avantaje
-✅ **Space saving**: Nu ocupă spațiul de lucru
-✅ **Cable management**: Cabluri ascunse în perete
-✅ **Permanent**: Soluție fixă și elegantă
-✅ **High power**: Conexiune directă la rețea
+#### Advantages
+✅ **Space Saving**: Doesn't occupy workspace
+✅ **Cable Management**: Hidden cables in wall
+✅ **Permanent**: Fixed and elegant solution
+✅ **High Power**: Direct connection to network
 
-#### Implementare
-1. **Identifică locația**: Aproape de birou, accesibilă
-2. **Electrical work**: Priza dedicată cu circuit separat
-3. **Cable routing**: Canale pentru estetica
-4. **Device shelves**: Rafturi pentru dispozitive în încărcare
+#### Implementation
+1. **Identify Location**: Near desk, accessible
+2. **Electrical Work**: Dedicated outlet with separate circuit
+3. **Cable Routing**: Channels for aesthetics
+4. **Device Shelves**: Racks for charging devices
 
 ### 3. Drawer Charging Station
-**Soluția ascunsă**
+**Hidden Solution**
 
 #### Concept
-Primul sertar al biroului devine stația de încărcare:
-- **Hub central**: În fundul sertarului
-- **Organizatoare**: Compartimente pentru fiecare dispozitiv
-- **Ventilație**: Găuri pentru prevenirea supraîncălzirii
-- **Easy access**: Quick grab pentru dispozitive
+First drawer of the desk becomes the charging station:
+- **Central Hub**: In the drawer bottom
+- **Organizers**: Compartments for each device
+- **Ventilation**: Holes for overheating prevention
+- **Easy Access**: Quick grab for devices
 
 #### DIY Implementation
-**Materiale necesare**:
-- Organizator sertar cu compartimente
+**Materials Needed**:
+- Drawer organizer with compartments
 - Charging hub 100W+
-- Velcro strips pentru fixare
-- Cable sleeves pentru organizare
-- Mini ventilator USB (opțional)
+- Velcro strips for attachment
+- Cable sleeves for organization
+- Mini USB fan (optional)
 
-## Principiile designului eficient
+## Efficient Design Principles
 
 ### 1. Accessibility vs Aesthetics
-**Balance între funcționalitate și aspect**
+**Balance between functionality and appearance**
 
-#### Quick access zone
-- **Smartphone-urile**: Cel mai aproape de scaun
-- **Smartwatch**: Dock vizibil pentru notificări
-- **Headphones**: Hook sau stand dedicat
+#### Quick Access Zone
+- **Smartphones**: Closest to chair
+- **Smartwatch**: Visible dock for notifications
+- **Headphones**: Hook or dedicated stand
 
-#### Hidden charging zone  
-- **Power bank**: În sertar pentru backup
-- **Camera equipment**: Rack lateral pentru accesorii
-- **Spare devices**: Organizare verticală
+#### Hidden Charging Zone  
+- **Power Bank**: In drawer for backup
+- **Camera Equipment**: Lateral rack for accessories
+- **Spare Devices**: Vertical organization
 
 ### 2. Heat Management
-**Disiparea căldurii pentru longevitate**
+**Heat Dissipation for Longevity**
 
-#### Spacing-ul dispozitivelor
-- **Minimum 2cm** între dispozitive în încărcare
-- **Ventilație**: Evită încapsularea în spații închise
-- **Materials**: Suprafețe metalice pentru heat dissipation
+#### Spacing of Devices
+- **Minimum 2cm** between charging devices
+- **Ventilation**: Prevents trapping in closed spaces
+- **Materials**: Metal surfaces for heat dissipation
 
-#### Active cooling
-- **Desktop fan**: 120mm quiet fan pentru mari configurații
-- **USB fans**: Mini ventilatoare pentru zone problematice
-- **Thermal pads**: Sub hub-urile de încărcare puternice
+#### Active Cooling
+- **Desktop Fan**: 120mm quiet fan for large setups
+- **USB Fans**: Mini fans for problematic zones
+- **Thermal Pads**: Under powerful charging hubs
 
 ### 3. Cable Management Philosophy
 
-#### "One cable, one purpose"
-- **Câte un cablu dedicat** pentru fiecare dispozitiv
-- **Length optimization**: Cabluri de lungimi diferite
-- **Color coding**: Negru pentru work, alb pentru personal
+#### "One Cable, One Purpose"
+- **One dedicated cable** for each device
+- **Length Optimization**: Different cable lengths
+- **Color Coding**: Black for work, white for personal
 
-#### Routing strategies
-- **Under-desk trays**: Cabluri ascunse sub birou
-- **Spiral wrap**: Pentru cabluri temporare
-- **Magnetic holders**: Quick attachment/detachment
+#### Routing Strategies
+- **Under-desk Trays**: Hidden cables under desk
+- **Spiral Wrap**: For temporary cables
+- **Magnetic Holders**: Quick attachment/detachment
 
-## Configurații recomandate
+## Recommended Configurations
 
-### Setup 1: "The Minimalist" (Sub 1000 RON)
-**Perfect pentru freelancer sau student**
+### Setup 1: "The Minimalist" (Under 1000 RON)
+**Perfect for freelancer or student**
 
-#### Componente
+#### Components
 - **ErgoCharge Multi-Port Hub**: 299 RON
-- **Bamboo organizer tray**: 89 RON  
-- **Cable management kit**: 45 RON
-- **Smartphone stands (2x)**: 60 RON
+- **Bamboo Organizer Tray**: 89 RON  
+- **Cable Management Kit**: 45 RON
+- **Smartphone Stands (2x)**: 60 RON
 
 #### Layout
 Layout schema:
-- Laptop și Monitor conectate la Hub central
-- Hub conectat la zona Wireless
-- Dispozitivele (Phone, Watch, Headphones) organizate în jurul setup-ului
+- Laptop and Monitor connected to central Hub
+- Hub connected to Wireless Zone
+- Devices (Phone, Watch, Headphones) organized around setup
 
 ### Setup 2: "The Professional" (1000-2500 RON)
-**Pentru consultanți și manageri**
+**For consultants and managers**
 
-#### Componente
+#### Components
 - **ErgoStation Pro Dock**: 699 RON
-- **Under-desk cable tray**: 149 RON
-- **Wall-mounted device shelf**: 199 RON
-- **Smart power strip cu monitoring**: 299 RON
-- **Wireless charging mat mare**: 189 RON
+- **Under-desk Cable Tray**: 149 RON
+- **Wall-mounted Device Shelf**: 199 RON
+- **Smart Power Strip with Monitoring**: 299 RON
+- **Large Wireless Charging Mat**: 189 RON
 
 #### Features
-- **Power monitoring**: Track consumul energetic
-- **Scheduled charging**: Timer pentru economie
-- **Device recognition**: Auto-optimizare putere
+- **Power Monitoring**: Track Energy Consumption
+- **Scheduled Charging**: Timer for Economy
+- **Device Recognition**: Auto-power Optimization
 
 ### Setup 3: "The Creator" (2500+ RON)
-**Pentru content creators și developers**
+**For content creators and developers**
 
-#### Componente premium
+#### Premium Components
 - **ErgoStudio Master Station**: 1299 RON
-- **Custom desk cu încărcare integrată**: 1999 RON
-- **Professional cable management**: 399 RON
+- **Custom Desk with Integrated Charging**: 1999 RON
+- **Professional Cable Management**: 399 RON
 - **Backup UPS**: 599 RON
-- **Climate monitoring**: 199 RON
+- **Climate Monitoring**: 199 RON
 
-#### Advanced features
-- **Uninterrupted power**: UPS pentru outage protection
-- **Environmental control**: Temperatura și umiditatea optimă
-- **Productivity integration**: Smart home automation
+#### Advanced Features
+- **Uninterrupted Power**: UPS for Outage Protection
+- **Environmental Control**: Optimal Temperature and Humidity
+- **Productivity Integration**: Smart Home Automation
 
-## Optimizarea workflow-ului
+## Workflow Optimization
 
 ### Morning Routine Integration
-**Încărcarea ca parte din rutina de dimineață**
+**Charging as Part of Morning Routine**
 
 #### 6:00 AM - Wakeup
-- **Smartphone**: De pe nighstand pe stația de lucru
-- **Smartwatch**: Check charge level, eventual swap cu al doilea
+- **Smartphone**: From nightstand to work station
+- **Smartwatch**: Check charge level, swap with second if needed
 
 #### 6:30 AM - Coffee & Planning  
-- **Laptop**: Unplug și setup pentru ziua de lucru
-- **Tablet**: Sync și charge check pentru meetings
+- **Laptop**: Unplug and setup for work day
+- **Tablet**: Sync and charge check for meetings
 
 #### 7:00 AM - Work Start
-- **Everything connected**: All devices în pozițiile lor optime
+- **Everything Connected**: All devices in their optimal positions
 
 ### End-of-day Protocol
-**Preparation pentru următoarea zi**
+**Preparation for Next Day**
 
 #### 18:00 - Work End
-- **Cable check**: Verifică toate conexiunile
-- **Battery levels**: Assess ce needs overnight charging
-- **Tomorrow prep**: Setup pentru următoarea zi
+- **Cable Check**: Verify all connections
+- **Battery Levels**: Assess what needs overnight charging
+- **Tomorrow Prep**: Setup for next day
 
-#### Evening routine
-- **Power down sequence**: Laptop hibernate, peripherals off
-- **Overnight charging**: Only pentru devices sub 20%
-- **Morning ready**: Everything positioned pentru quick start
+#### Evening Routine
+- **Power Down Sequence**: Laptop hibernate, peripherals off
+- **Overnight Charging**: Only for devices under 20%
+- **Morning Ready**: Everything positioned for quick start
 
-## Troubleshooting comun
+## Common Troubleshooting
 
-### Problema: "Încărcarea lentă"
-**Diagnosticare și soluții**
+### Problem: "Slow Charging"
+**Diagnosis and Solutions**
 
-#### Cauze posibile
-- **Power sharing**: Prea multe dispozitive pe același hub
-- **Cable degradation**: Cabluri vechi cu rezistență mare
-- **Port compatibility**: USB-A vs USB-C power delivery
+#### Possible Causes
+- **Power Sharing**: Too many devices on one hub
+- **Cable Degradation**: Old cables with high resistance
+- **Port Compatibility**: USB-A vs USB-C power delivery
 
-#### Soluții
-- **Power audit**: Measure actual vs needed power
-- **Cable upgrade**: Premium cables cu fast charging support
-- **Hub upgrade**: Higher total power rating
+#### Solutions
+- **Power Audit**: Measure actual vs needed power
+- **Cable Upgrade**: Premium cables with fast charging support
+- **Hub Upgrade**: Higher total power rating
 
-### Problema: "Overheating"
-**Managementul căldurii**
+### Problem: "Overheating"
+**Heat Management**
 
-#### Quick fixes
-- **Increase spacing**: Mai mult aer între dispozitive
-- **Remove cases**: În timpul încărcării pentru phones
-- **Add ventilation**: Mini fan sau pozitionare diferită
+#### Quick Fixes
+- **Increase Spacing**: More air between devices
+- **Remove Cases**: During charging for phones
+- **Add Ventilation**: Mini fan or different positioning
 
-#### Long-term solutions
-- **Better hub**: Cu cooling integrat
-- **Workspace redesign**: Improve air flow
-- **Schedule charging**: Evită simultaneous charging în periods caldă
+#### Long-term Solutions
+- **Better Hub**: With integrated cooling
+- **Workspace Redesign**: Improve air flow
+- **Schedule Charging**: Avoid simultaneous charging in hot periods
 
-## Viitorul home office charging
+## Future Home Office Charging
 
-### Tehnologii emergente
+### Emerging Technologies
 
-#### Wireless power everywhere
-- **Desk surface charging**: Întreaga suprafață devine wireless charger
-- **Chair integrated**: Charging în timpul șederii
-- **Wall charging**: Aproape de perete = automatic charging
+#### Wireless Power Everywhere
+- **Desk Surface Charging**: Entire surface becomes wireless charger
+- **Chair Integrated**: Charging during sitting
+- **Wall Charging**: Near wall = automatic charging
 
-#### AI-powered management
-- **Predictive charging**: Machine learning pentru battery patterns
-- **Smart prioritization**: Critical devices first
-- **Energy optimization**: Grid integration pentru cost reduction
+#### AI-powered Management
+- **Predictive Charging**: Machine learning for battery patterns
+- **Smart Prioritization**: Critical devices first
+- **Energy Optimization**: Grid integration for cost reduction
 
-#### IoT integration
-- **Voice control**: "Alexa, charge my laptop at 50%"
-- **Mobile app control**: Remote monitoring și management
-- **Calendar integration**: Charge based pe scheduled meetings
+#### IoT Integration
+- **Voice Control**: "Alexa, charge my laptop at 50%"
+- **Mobile App Control**: Remote monitoring and management
+- **Calendar Integration**: Charge based on scheduled meetings
 
-## Măsurarea succesului
+## Measuring Success
 
-### KPI-uri pentru charging station
+### KPIs for Charging Station
 
-#### Efficiency metrics
-- **Average charge time**: Cât durează 0-80% pentru fiecare device
-- **Downtime reduction**: Cât timp saved vs ad-hoc charging
-- **Cable life**: Durability improvement cu proper management
+#### Efficiency Metrics
+- **Average Charge Time**: How long 0-80% takes for each device
+- **Downtime Reduction**: Time saved vs ad-hoc charging
+- **Cable Life**: Durability improvement with proper management
 
-#### Productivity impact
-- **Meeting readiness**: Always charged pentru video calls
-- **Mobility freedom**: Device independence increased
-- **Stress reduction**: No more "low battery anxiety"
+#### Productivity Impact
+- **Meeting Readiness**: Always charged for video calls
+- **Mobility Freedom**: Device independence increased
+- **Stress Reduction**: No more "low battery anxiety"
 
-#### Cost analysis
-- **Energy efficiency**: kWh consumption optimization
-- **Device longevity**: Battery health maintenance
-- **Replacement reduction**: Fewer cables și accessories needed
+#### Cost Analysis
+- **Energy Efficiency**: kWh consumption optimization
+- **Device Longevity**: Battery health maintenance
+- **Replacement Reduction**: Fewer cables and accessories needed
 
-*O stație de încărcare bine gândită nu este doar despre alimentarea dispozitivelor - este despre crearea unui ecosistem de productivitate care susține work-from-home success-ul pe termen lung. ErgoCharge oferă toate componentele necesare pentru a-ți construi setup-ul perfect, adaptat stilului tău de lucru și nevoilor specifice.*
+*A well-thought-out charging station is not just about powering devices - it's about creating a productivity ecosystem that supports work-from-home success over the long term. ErgoCharge provides all the components needed to build your perfect setup, adapted to your work style and specific needs.*
     `,
     image: "https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=800&h=600&fit=crop&crop=center",
     category: "Lifestyle",
     author: "Emily Davis",
     date: "2024-01-01",
     readTime: "5 min",
-    tags: ["home office", "productivitate", "organizare", "workspace"]
+    tags: ["home office", "productivity", "organization", "workspace"]
   }
 ];
 

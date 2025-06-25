@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
+import { useState } from 'react';
 import { ArrowLeft, Calendar, Clock, User, Tag, Share2, BookmarkPlus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -6,16 +7,32 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import NewsletterSection from '@/components/NewsletterSection';
 import { SimpleShareDialog } from '@/components/SimpleShareDialog';
 import { SaveDialog } from '@/components/SaveDialog';
 import { LikeButton } from '@/components/LikeButton';
 import { getPostById, blogPosts } from '@/data/blogPosts';
+import { useNewsletter } from '@/hooks/useNewsletter';
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
   const postId = parseInt(id || '0');
   const post = getPostById(postId);
+
+  // Newsletter state
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const { subscribe, loading, error } = useNewsletter();
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    
+    const result = await subscribe(email, name || undefined);
+    if (result.success) {
+      setEmail('');
+      setName('');
+    }
+  };
 
   // Redirect dacă articolul nu există
   if (!post) {
@@ -268,7 +285,80 @@ const BlogPost = () => {
         </div>
       </section>
 
-      <NewsletterSection />
+      {/* Newsletter Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto">
+            <Card className="p-8 text-center shadow-lg">
+              <div className="w-16 h-16 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gray-600 rounded-sm flex items-center justify-center">
+                  <span className="text-white text-sm">✉</span>
+                </div>
+              </div>
+              
+              <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
+              <p className="text-gray-600 mb-8">
+                Get notified about new ErgoCharge products and exclusive offers.
+              </p>
+
+              <form onSubmit={handleNewsletterSubmit} className="space-y-4 mb-8">
+                <input
+                  type="text"
+                  placeholder="Numele tău (optional)"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+                
+                <div className="flex gap-3">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  />
+                  <Button 
+                    type="submit"
+                    disabled={loading || !email.trim()}
+                    className="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium disabled:opacity-50"
+                  >
+                    {loading ? 'Subscribing...' : 'Subscribe'}
+                  </Button>
+                </div>
+              </form>
+
+              {error && (
+                <p className="text-red-500 text-sm mb-4">{error}</p>
+              )}
+
+              <p className="text-sm text-gray-500 mb-8">
+                We respect your privacy. Unsubscribe at any time.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="text-center">
+                  <div className="w-12 h-12 mx-auto mb-3 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 text-xl">🚀</span>
+                  </div>
+                  <h3 className="font-semibold mb-2">New Products</h3>
+                  <p className="text-sm text-gray-600">Be first to know about launches</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-12 h-12 mx-auto mb-3 bg-yellow-100 rounded-full flex items-center justify-center">
+                    <span className="text-yellow-600 text-xl">🏷️</span>
+                  </div>
+                  <h3 className="font-semibold mb-2">Exclusive Deals</h3>
+                  <p className="text-sm text-gray-600">Special discounts for subscribers</p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
